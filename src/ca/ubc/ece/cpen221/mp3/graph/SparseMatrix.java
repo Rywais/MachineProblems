@@ -27,16 +27,27 @@ public class SparseMatrix {
 			rows.put(row, new HashMap<Integer, Integer>());
 			rows.get(row).put(column, value);
 		}
+		
+		else{
+			try{
+			rows.get(row).put(column, value + rows.get(row).get(column));
+			} catch(Exception E){
+				rows.get(row).put(column, value);
+			}
+		}
 
 		// If current column does not exist, add it
-		else if (!columns.containsKey(column)) {
+		if (!columns.containsKey(column)) {
 			columns.put(column, new HashMap<Integer, Integer>());
 			columns.get(column).put(row, value);
 		}
 
 		else {
-			rows.get(row).put(column, value + rows.get(row).get(column));
-			columns.get(column).put(row, value + rows.get(column).get(row));
+			try{
+				columns.get(column).put(row, value + rows.get(column).get(row));
+			} catch(Exception E){
+				columns.get(column).put(row, value);
+			}
 		}
 	}
 
@@ -53,7 +64,7 @@ public class SparseMatrix {
 		if (!rows.get(row).containsKey(column))
 			return 0;
 
-		return rows.get(row).get(column);
+		return (int) rows.get(row).get(column);
 	}
 
 	/**
@@ -82,7 +93,9 @@ public class SparseMatrix {
 	 * @return An array of valid rows
 	 */
 	public Integer[] getRowIndices() {
-		return (Integer[]) rows.keySet().toArray();
+		Integer[] result = new Integer[rows.keySet().toArray().length];
+		rows.keySet().toArray(result);
+		return result;
 	}
 
 	/**
@@ -90,8 +103,13 @@ public class SparseMatrix {
 	 * (i.e. The matrix has non-zero elements in that column)
 	 * @return An array of valid columns
 	 */
-	public Integer[] getColumnIndices() {
-		return (Integer[]) columns.keySet().toArray();
+	public int[] getColumnIndices() {
+		int[] result = new int[columns.keySet().toArray().length];
+		for(int i =0; i < columns.keySet().toArray().length; i++){
+		result[i] = (int) columns.keySet().toArray()[i];	
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -103,7 +121,7 @@ public class SparseMatrix {
 	public static SparseMatrix multiply(SparseMatrix a, SparseMatrix b) {
 
 		SparseMatrix result = new SparseMatrix();
-
+		
 		// for all rows in A
 		for (int i : a.getRowIndices()) {
 			// for all columns in B
@@ -115,7 +133,8 @@ public class SparseMatrix {
 				}
 			}
 		}
-
+		
+		
 		return result;
 	}
 	
@@ -131,7 +150,7 @@ public class SparseMatrix {
 		if(exponent < 2)
 			throw new IllegalArgumentException();
 		SparseMatrix result = SparseMatrix.multiply(a, a);
-		for (int i = 0; i < exponent - 1; i++) {
+		for (int i = 0; i < exponent - 2; i++) {
 			result = SparseMatrix.multiply(result, a);
 		}
 		return result;
