@@ -10,7 +10,7 @@ public class AdjacencyListTests {
 
 	/**
 	 * Tests that ten added edges are added properly by
-	 * checking that they exist
+	 * checking that they exist.
 	 */
 	@Test
 	public void addingEdgesTest() {
