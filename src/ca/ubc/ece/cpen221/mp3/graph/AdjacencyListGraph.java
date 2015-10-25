@@ -11,11 +11,24 @@ public class AdjacencyListGraph implements Graph {
 	List<Edge> eList = new ArrayList<Edge>();
 	
 	
+	
+	/**
+	 * Adds a already made vertex to the Graph.
+	 * @param v is the vertex to be added
+	 */
 	@Override
 	public void addVertex(Vertex v) {
 		vList.add(v);
 	}
 
+	
+	/**
+	 * Adds an edge between two vertices already contained within the graph
+	 * @param v1 is the upstream vertex
+	 * @param v2 is the downstream vertex
+	 * @throws IllegalArgumentException if the vertices aren't already
+	 * contained within the graph
+	 */
 	@Override
 	public void addEdge(Vertex v1, Vertex v2) throws IllegalArgumentException{
 		if(vList.contains(v1) && vList.contains(v2)){
@@ -26,11 +39,18 @@ public class AdjacencyListGraph implements Graph {
 		
 	}
 
+	/**
+	 * Determines whether or not there is a an edge leading from
+	 * one point to another
+	 * @param v1 is the upstream vertex
+	 * @param2 v2 is the downstream vertex
+	 * @return True if the edge exists, false otherwise
+	 */
 	@Override
 	public boolean edgeExists(Vertex v1, Vertex v2) {
-		Edge test = new Edge(v1,v2);
 		for(Edge i : eList){
-			if(i.equals(test))
+			if(i.getStartVertex().getLabel().equals(v1.getLabel()) &&
+					i.getEndVertex().getLabel().equals(v2.getLabel()))
 				return true;
 		}
 		return false;
