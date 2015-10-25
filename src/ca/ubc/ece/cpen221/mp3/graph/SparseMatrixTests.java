@@ -58,8 +58,33 @@ public class SparseMatrixTests {
 		
 		assertEquals(holdingMatrix.get(3,1),-40098253);
 		assertEquals(holdingMatrix.get(3,2),481485121);
-		assertEquals(holdingMatrix.get(3,3),273958427);
-			
+		assertEquals(holdingMatrix.get(3,3),273958427);		
+	}//End matrixMultiplicationTest()
+	
+	@Test
+	public void copyConstructorTest(){
+		
+		SparseMatrix myMatrix = new SparseMatrix();
+		SparseMatrix holdingMatrix;
+		
+		myMatrix.add(1,1,7);
+		myMatrix.add(1,2,17);
+		myMatrix.add(1,3,-8);
+		
+		myMatrix.add(2,1,4);
+		myMatrix.add(2,3,11);
+		
+		myMatrix.add(3,1,-13);
+		myMatrix.add(3,2,91);
+		myMatrix.add(3,3,32);
+		
+		holdingMatrix = new SparseMatrix(myMatrix);
+		
+		for(int i : myMatrix.getRowIndices()){
+			for(int j : myMatrix.getColumnIndices()){
+				assertTrue(myMatrix.get(i, j) == holdingMatrix.get(i, j));
+			}
+		}
 	}
 
 }

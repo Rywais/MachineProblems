@@ -6,8 +6,28 @@ import ca.ubc.ece.cpen221.mp3.staff.Vertex;
 
 public class AdjacencyMatrixGraph implements Graph {
 	
-	private SparseMatrix am = new SparseMatrix();
-	private ArrayList<Integer> vertices = new ArrayList<Integer>(); 
+	private SparseMatrix am;
+	private ArrayList<Integer> vertices; 
+	
+	/**
+	 * Default constructor
+	 */
+	public AdjacencyMatrixGraph(){
+		am = new SparseMatrix();
+		vertices = new ArrayList<Integer>();
+	}
+	
+	/**
+	 * Copying constructor 
+	 * @param amg is the AdjacencyMatrixGraph to be copied
+	 */
+	public AdjacencyMatrixGraph(AdjacencyMatrixGraph amg){
+		am = new SparseMatrix(amg.getSparseMatrix());
+		vertices = new ArrayList<Integer>();
+		for(Vertex i : amg.getVertices()){
+			vertices.add(Integer.parseInt(i.getLabel()));
+		}
+	}
 	
 	/**
 	 * Adds a vertex to the list of vertices
@@ -73,6 +93,9 @@ public class AdjacencyMatrixGraph implements Graph {
     	return result;
     }
 
+    /**
+     * Returns a list of vertices contained in the graph
+     */
     @Override
     public List<Vertex> getVertices() {
         List<Vertex> result = new ArrayList<Vertex>();
@@ -83,6 +106,8 @@ public class AdjacencyMatrixGraph implements Graph {
         return result;
     }
 	
-	
+	public SparseMatrix getSparseMatrix(){
+		return new SparseMatrix(am);
+	}
 	
 }
