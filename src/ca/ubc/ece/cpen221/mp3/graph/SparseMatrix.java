@@ -10,9 +10,27 @@ public class SparseMatrix {
 	// Exterior hashmap takes column as key, interior takes row
 	HashMap<Integer, HashMap<Integer, Integer>> columns;
 
+	/**
+	 * Default Constructor
+	 */
 	public SparseMatrix() {
 		rows = new HashMap<Integer, HashMap<Integer, Integer>>();
 		columns = new HashMap<Integer, HashMap<Integer, Integer>>();
+	}
+	
+	/**
+	 * Copy Constructor
+	 * @param m is the sparse matrix to be copied
+	 */
+	public SparseMatrix(SparseMatrix m){
+		rows = new HashMap<Integer, HashMap<Integer, Integer>>();
+		columns = new HashMap<Integer, HashMap<Integer, Integer>>();
+		
+		for(int i : m.getRowIndices()){
+			for(int j : m.getColumnIndices()){
+				this.add(i, j, m.get(i, j));
+			}
+		}
 	}
 
 	/**
