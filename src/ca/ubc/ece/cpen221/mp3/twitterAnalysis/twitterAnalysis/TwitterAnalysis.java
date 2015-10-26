@@ -164,7 +164,6 @@ public class TwitterAnalysis {
 		
 		if(query[0].equals("commonInfluencers")){
 			
-			System.out.println("A");
 			List<Vertex> vList = Algorithms.commonUpstreamVertices(amg,
 					new Vertex(query[1]),new Vertex(query[2]));
 		
