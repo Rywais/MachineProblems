@@ -172,30 +172,47 @@ public class TwitterAnalysis {
 			PrintWriter writer;
 			
 			try{
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(OutputFile, true)));
-			writer.println("<result>");
-			for(Vertex i : vList){
-				writer.println(i.getLabel());
-			}
-			writer.println("</result>");
-			writer.close();
-			
+				writer = new PrintWriter(new BufferedWriter(new FileWriter(OutputFile, true)));
+				writer.print("Query: " + query[0] + " " + query[1]);
+				writer.println(" " + query[2]);
+				writer.println("<result>");
+				if (vList.size() > 0) {
+					for (Vertex i : vList) {
+						writer.println(i.getLabel());
+
+					}
+				}
+				else{
+					writer.print("Users " + query[1] + " and " + query[2]);
+					writer.println(" have no common influencers");
+				}
+				writer.println("</result>");
+				writer.close();
+
 			}catch(Exception E){
 				System.out.println("Error with output file");
 			}
 		}
 		else if(query[0].equals("numRetweets")){
 			
-			//TODO set value once algorithm is finished
-			//int numRetweets = ALGORITHM
+			int numRetweets = Algorithms.shortestDistance(alg, 
+					new Vertex(query[1]), new Vertex(query[2]));
 			
 			PrintWriter writer;
 			
 			try{
+				
 				writer = new PrintWriter(new BufferedWriter(new FileWriter(OutputFile, true)));
+				writer.print("Query: " + query[0] + " " + query[1]);
+				writer.println(" " + query[2]);
 				writer.println("<result>");
-				//TODO: Add once algorithm is present
-				//writer.println(numRetweets); OR print That there is no such #
+				if(numRetweets != -1)
+					writer.println(numRetweets);
+				else{
+					writer.println("No such number exists:");
+					writer.print("User " + query[1] + "'s tweets ");
+					writer.println("cannot reach user " + query[2]);
+				}
 				writer.println("</result>");
 				writer.close();
 				
