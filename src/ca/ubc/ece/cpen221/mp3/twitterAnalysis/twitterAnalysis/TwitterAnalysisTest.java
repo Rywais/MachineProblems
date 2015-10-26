@@ -10,12 +10,13 @@ import ca.ubc.ece.cpen221.mp3.graph.*;
 public class TwitterAnalysisTest {
 
 	/**
-	 * Tests a query for commonInfluencers, should output 2 & 6 into the specified file
+	 * Tests a query for commonInfluencers, should output 2 & 6 
+	 * into the specified file (on separate lines)
 	 * 
 	 * **NOTE**: The Output file should be specified and checked by the tester
 	 * It's location is marked with a comment 
 	 * 
-	 * Verified to work by Ryan Watt for the provided data
+	 * Verified to work by Ryan Watt for the sample provided data
 	 */
 	@Test
 	public void commonInfluencersQuery() {
