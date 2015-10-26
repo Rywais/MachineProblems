@@ -1,8 +1,10 @@
-package ca.ubc.ece.cpen221.mp3.graph;
+package ca.ubc.ece.cpen221.mp3.tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import ca.ubc.ece.cpen221.mp3.graph.SparseMatrix;
 
 public class SparseMatrixTests {
 

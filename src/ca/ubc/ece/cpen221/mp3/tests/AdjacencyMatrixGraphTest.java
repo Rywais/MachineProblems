@@ -1,7 +1,8 @@
-package ca.ubc.ece.cpen221.mp3.graph;
+package ca.ubc.ece.cpen221.mp3.tests;
 
 import java.util.*;
 
+import ca.ubc.ece.cpen221.mp3.graph.AdjacencyMatrixGraph;
 import ca.ubc.ece.cpen221.mp3.staff.*;
 
 import static org.junit.Assert.*;
