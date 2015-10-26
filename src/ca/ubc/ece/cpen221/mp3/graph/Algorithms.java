@@ -119,4 +119,37 @@ public class Algorithms {
 		return result;
 	}
 
+	public static boolean breadthFirstSearch(Graph g, Vertex a, Vertex b){
+		if(g.getDownstreamNeighbors(a).contains(b))
+			return true;
+		return continueBFS(g,g.getDownstreamNeighbors(a),g.getDownstreamNeighbors(a),b);
+	}
+	
+	private static boolean continueBFS(Graph g, List<Vertex> A, List<Vertex> alreadySearched, Vertex b){
+		for(Vertex i : A){
+			//skip iteration if it's already been searched
+			if(alreadySearched.contains(i))
+				continue;
+			if(g.getDownstreamNeighbors(i).contains(b))
+				return true;
+			alreadySearched.add(i);
+		}
+		
+		//List of vertices to be searched at the next depth level
+		List<Vertex> pass = new ArrayList<Vertex>();
+		
+		//Add all un-searched vertices at next depth
+		for(Vertex i : A){
+			for(Vertex j : g.getDownstreamNeighbors(i)){
+				if(!alreadySearched.contains(j))
+					pass.add(j);
+			}
+		}
+		
+		if(pass.size() == 0)
+			return false;
+		
+		return continueBFS(g,pass,alreadySearched,b);
+		
+	}
 }

@@ -114,6 +114,9 @@ public class AlgorithmsTest {
 		}
 	}
 	
+	/**
+	 * Tests shortest path algorithm with sample data from a known graph
+	 */
 	@Test
 	public void shortestPathTest(){
 		Graph amg = new AdjacencyMatrixGraph();
@@ -149,5 +152,46 @@ public class AlgorithmsTest {
 		
 		assertEquals(Algorithms.shortestDistance(alg, v[1], v[6]),-1);
 	}
+	
+	/**
+	 * Tests Breadth First Search algorithm with known data from a simple graph
+	 */
+	@Test
+	public void testBFS(){
+		Graph amg = new AdjacencyMatrixGraph();
+		Graph alg = new AdjacencyListGraph();
+		Vertex[] v = new Vertex[10];
+		
+		for(int i = 0; i < 10; i++){
+			v[i] = new Vertex(Integer.toString(i+1));
+			amg.addVertex(v[i]);
+			alg.addVertex(v[i]);
+		}
+		
+		amg.addEdge(v[1], v[3]);
+		amg.addEdge(v[1], v[2]);
+		amg.addEdge(v[2], v[3]);
+		amg.addEdge(v[2], v[4]);
+		amg.addEdge(v[2], v[5]);
+		amg.addEdge(v[3], v[2]);
+		amg.addEdge(v[3], v[4]);
+		amg.addEdge(v[4], v[5]);
+		
+		assertEquals(Algorithms.breadthFirstSearch(amg, v[1], v[5]),true);
+		
+		alg.addEdge(v[1], v[3]);
+		alg.addEdge(v[1], v[2]);
+		alg.addEdge(v[2], v[3]);
+		alg.addEdge(v[2], v[4]);
+		alg.addEdge(v[2], v[5]);
+		alg.addEdge(v[3], v[2]);
+		alg.addEdge(v[3], v[4]);
+		alg.addEdge(v[4], v[5]);
+		alg.addEdge(v[6], v[5]);
+		
+		assertEquals(Algorithms.breadthFirstSearch(alg, v[1], v[6]), false);
+	}
 
+	
+	
 }
