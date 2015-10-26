@@ -15,6 +15,8 @@ public class TwitterAnalysis {
 	 * Main method
 	 * @param args contains an input file and an output file,
 	 *  input file must already exist
+	 *  
+	 *  Note: Output file will be appended with new query data.
 	 */
 	public static void main(String[] args){
 		
@@ -30,12 +32,15 @@ public class TwitterAnalysis {
 		}
 		System.out.println("Graphs Created!");
 		
+		System.out.println("Starting to process Queries...");
 		passQueries(args[0],args[1]);
+		System.out.println("Finished processing Queries, Terminating...");
 		
 	}
 	
 	/**
-	 * Creates two graphs (One for each implementation)
+	 * Creates two graphs (One for each implementation) which must have
+	 * already been initialized
 	 * @param amg One of the graphs to create (Will be modified)
 	 * @param alg One of the graphs to create (Will be modified)
 	 * @throws FileNotFoundException Indicates that the twitterdata could not be found
@@ -90,7 +95,8 @@ public class TwitterAnalysis {
 	}
 	
 	/**
-	 * Reads the queries of an input file and outputs the results to another file
+	 * Reads the queries of an input file and outputs the results to another file,
+	 * preventing invalid queries and repeated queries.
 	 * @param inputFile is the input file which must already exist
 	 * @param outputFile is the output file for query data
 	 */
@@ -204,29 +210,3 @@ public class TwitterAnalysis {
 	}
 	
 }
-
-//This effectively finds the twitter Data File and reads it line by line
-/*
-BufferedReader br;
-try{
-br = new BufferedReader(new FileReader(
-		"datasets/twitter.txt"));
-} catch(FileNotFoundException E){
-	System.out.println("File not found, Terminating...");
-	return;
-}
-System.out.println("File found :D");
-
-try{
-	int i = 0;
-	while(true){
-		System.out.println(br.readLine());
-		Thread.sleep(500);
-		i++;
-		if(i > 10)
-			break;
-	}
-} catch(Exception E){
-	
-}
-*/
