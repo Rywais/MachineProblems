@@ -57,6 +57,7 @@ public class Main {
 		addGnats(world);
 		addRabbits(world);
 		addFoxes(world);
+		addTigers(world);
 		// TODO: You may add your own creatures here!
 	}
 
@@ -93,6 +94,15 @@ public class Main {
 			Rabbit rabbit = new Rabbit(rabbitAI, loc);
 			world.addItem(rabbit);
 			world.addActor(rabbit);
+		}
+	}
+	
+	private void addTigers(World world) {
+		for (int i = 0; i < INITIAL_TIGERS; i++) {
+			Location loc = Util.getRandomEmptyLocation(world);
+			Tiger tiger = new Tiger(loc);
+			world.addItem(tiger);
+			world.addActor(tiger);
 		}
 	}
 }
