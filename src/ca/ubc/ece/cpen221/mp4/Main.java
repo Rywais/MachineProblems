@@ -18,15 +18,15 @@ import ca.ubc.ece.cpen221.mp4.staff.WorldUI;
  */
 public class Main {
 
-	static final int X_DIM = 40;
-	static final int Y_DIM = 40;
+	static final int X_DIM = 64;
+	static final int Y_DIM = 36;
 	static final int SPACES_PER_GRASS = 7;
 	static final int INITIAL_GRASS = X_DIM * Y_DIM / SPACES_PER_GRASS;
 	static final int INITIAL_GNATS = INITIAL_GRASS / 4;
 	static final int INITIAL_RABBITS = INITIAL_GRASS / 4;
 	static final int INITIAL_FOXES = INITIAL_GRASS / 32;
-	static final int INITIAL_TIGERS = INITIAL_GRASS / 32;
-	static final int INITIAL_BEARS = INITIAL_GRASS / 40;
+	static final int INITIAL_TIGERS = INITIAL_GRASS / 64;
+	static final int INITIAL_BEARS = INITIAL_GRASS / 64;
 	static final int INITIAL_HYENAS = INITIAL_GRASS / 32;
 	static final int INITIAL_CARS = INITIAL_GRASS / 100;
 	static final int INITIAL_TRUCKS = INITIAL_GRASS / 150;
@@ -58,6 +58,7 @@ public class Main {
 		addRabbits(world);
 		addFoxes(world);
 		addTigers(world);
+		addBears(world);
 		// TODO: You may add your own creatures here!
 	}
 
@@ -103,6 +104,15 @@ public class Main {
 			Tiger tiger = new Tiger(loc);
 			world.addItem(tiger);
 			world.addActor(tiger);
+		}
+	}
+	
+	private void addBears(World world) {
+		for (int i = 0; i < INITIAL_BEARS; i++) {
+			Location loc = Util.getRandomEmptyLocation(world);
+			Bear bear = new Bear(loc);
+			world.addItem(bear);
+			world.addActor(bear);
 		}
 	}
 }

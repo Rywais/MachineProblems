@@ -1,5 +1,7 @@
 package ca.ubc.ece.cpen221.mp4.items.animals;
 
+import java.util.Random;
+
 import javax.swing.ImageIcon;
 
 import ca.ubc.ece.cpen221.mp4.Direction;
@@ -12,20 +14,20 @@ import ca.ubc.ece.cpen221.mp4.commands.Command;
 import ca.ubc.ece.cpen221.mp4.items.*;
 import ca.ubc.ece.cpen221.mp4.items.LivingItem;
 
-public class Tiger implements ArenaAnimal {
+public class Bear implements ArenaAnimal {
 	
 	Location location;
-	private static int INITIAL_ENERGY = 300;
-	private static int MAX_ENERGY = 400;
-	private final int STRENGTH = 800; //I think 8 foxes could take on a tiger... maybe
-	private static int COOLDOWN = 3;
-	private static int VIEW_RANGE = 7; //Tigers have good eyes, I think.
-	private static int BREEDING_ENERGY = 200;
-	private static final ImageIcon tigerImage = Util.loadImage("tiger.gif");
+	private static int INITIAL_ENERGY = 400; //You beautiful fat blubbery bastard
+	private static int MAX_ENERGY = 700;
+	private final int STRENGTH = 600; //I think 6 foxes could take on a bear... probably
+	private static int COOLDOWN = 6; //Lumbering hulk of a beast
+	private static int VIEW_RANGE = 4; //Just woke up from hibernation, barely conscious
+	private static int BREEDING_ENERGY = 600;
+	private static final ImageIcon bearImage = Util.loadImage("bear.gif");
 	
 	public int energy;
 	
-	public Tiger(Location initialLocation){
+	public Bear(Location initialLocation){
 		this.location = initialLocation;
 		this.energy = INITIAL_ENERGY;
 	}
@@ -56,18 +58,47 @@ public class Tiger implements ArenaAnimal {
 
 	@Override
 	public int getMovingRange() {
-		return 2; //Can pounce two spaces
+		return 1;
 	}
 
 	@Override
 	public ImageIcon getImage() {
-		return tigerImage;
+		return bearImage;
 	}
 
 	@Override
 	public String getName() {
-		return "Area under the Gaussiam squared"; 
-		//That's Pi, but he also goes by Big P once you get to know him
+		Random r = new Random();
+		String pre;
+		String post = " Bear";
+		switch(r.nextInt(7)){
+		case 0:
+			pre = "Polar";
+			break;
+		case 1:
+			pre = "Grizzly";
+			break;
+		case 2:
+			pre = "Black";
+			break;
+		case 3:
+			pre = "Brown";
+			break;
+		case 4:
+			pre = "Koala"; //My 2nd favorite type
+			break;
+		case 5:
+			pre = "Gummy"; //My first
+			break;
+		case 6:
+			pre = "Panda";
+			break;
+		default:
+			pre = "Fuzzy Wuzzy was a";
+		}
+		
+		return pre + post;
+		
 	}
 
 	@Override
@@ -109,9 +140,8 @@ public class Tiger implements ArenaAnimal {
 
 	@Override
 	public Command getNextAction(World world) {
-		energy = energy - 2; //And time takes its toll on the ol' Tiger
+		energy = energy - 3; //You try dragging around all that weight
 		Direction d = null;
-		Item food = null;
 		
 		if(getEnergy() >= 360){
 			Location x = Util.getRandomEmptyAdjacentLocation(world, location);
@@ -133,55 +163,40 @@ public class Tiger implements ArenaAnimal {
 						d = Direction.EAST;
 					else
 						d = Direction.WEST;
-					food = i;
 					continue;
 				}
-						
-						
 				d =Util.getDirectionTowards(location, i.getLocation());
-				food = i;
 			}
 		}
 		if(d == Direction.WEST){
-			if(getXDistance(location, food.getLocation()) > 2 && Util.isValidLocation(world, new Location(location.getX() - 2, location.getY()))
-					&& Util.isLocationEmpty(world, new Location(location.getX() - 2, location.getY())))
-					return new MoveCommand(this, new Location(location.getX() - 2, location.getY()));
 			
-			else if(Util.isValidLocation(world, new Location(location.getX() - 1, location.getY()))
+			if(Util.isValidLocation(world, new Location(location.getX() - 1, location.getY()))
 					&& Util.isLocationEmpty(world, new Location(location.getX() - 1, location.getY())))
 				return new MoveCommand(this, new Location(location.getX() - 1, location.getY()));
 		}
 		
 		if(d == Direction.EAST){
-			if(getXDistance(location, food.getLocation()) > 2 && Util.isValidLocation(world, new Location(location.getX() + 2, location.getY()))
-					&& Util.isLocationEmpty(world, new Location(location.getX() + 2, location.getY())))
-					return new MoveCommand(this, new Location(location.getX() + 2, location.getY()));
 			
-			else if(Util.isValidLocation(world, new Location(location.getX() + 1, location.getY()))
+			if(Util.isValidLocation(world, new Location(location.getX() + 1, location.getY()))
 					&& Util.isLocationEmpty(world, new Location(location.getX() + 1, location.getY())))
 				return new MoveCommand(this, new Location(location.getX() + 1, location.getY()));
 		}
 		
 		if(d == Direction.NORTH){
-			if(getYDistance(location, food.getLocation()) > 2 && Util.isValidLocation(world, new Location(location.getX(), location.getY() + 2))
-					&& Util.isLocationEmpty(world, new Location(location.getX(), location.getY() + 2)))
-					return new MoveCommand(this, new Location(location.getX(), location.getY() + 2));
 			
-			else if(Util.isValidLocation(world, new Location(location.getX(), location.getY() + 1))
+			if(Util.isValidLocation(world, new Location(location.getX(), location.getY() + 1))
 					&& Util.isLocationEmpty(world, new Location(location.getX(), location.getY() + 1)))
 				return new MoveCommand(this, new Location(location.getX(), location.getY() + 1));
 		}
 		
 		if(d == Direction.SOUTH){
-			if(getYDistance(location, food.getLocation()) > 2 && Util.isValidLocation(world, new Location(location.getX(), location.getY() - 2))
-					&& Util.isLocationEmpty(world, new Location(location.getX(), location.getY() - 2)))
-					return new MoveCommand(this, new Location(location.getX(), location.getY() - 2));
-			
-			else if(Util.isValidLocation(world, new Location(location.getX(), location.getY() - 1))
+			if(Util.isValidLocation(world, new Location(location.getX(), location.getY() - 1))
 					&& Util.isLocationEmpty(world, new Location(location.getX(), location.getY() - 1)))
 				return new MoveCommand(this, new Location(location.getX(), location.getY() - 1));
 		}
 		
+		//Don't waste all that energy if you're just waiting, just hibernate!
+		energy = energy + 2; 
 		return new WaitCommand();
 	}
 
