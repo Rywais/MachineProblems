@@ -14,20 +14,20 @@ import ca.ubc.ece.cpen221.mp4.commands.Command;
 import ca.ubc.ece.cpen221.mp4.items.*;
 import ca.ubc.ece.cpen221.mp4.items.LivingItem;
 
-public class Bear implements ArenaAnimal {
+public class Hyena implements ArenaAnimal {
 	
 	Location location;
-	private static int INITIAL_ENERGY = 400; //You beautiful fat blubbery bastard
-	private static int MAX_ENERGY = 700;
-	private final int STRENGTH = 600; //I think 6 foxes could take on a bear... probably
-	private static int COOLDOWN = 6; //Lumbering hulk of a beast
-	private static int VIEW_RANGE = 4; //Just woke up from hibernation, barely conscious
-	private static int BREEDING_ENERGY = 600;
-	private static final ImageIcon bearImage = Util.loadImage("bear.gif");
+	private static int INITIAL_ENERGY = 120;
+	private static int MAX_ENERGY = 150;
+	private final int STRENGTH = 200; //2 foxes ~= 1 hyena
+	private static int COOLDOWN = 3;
+	private static int VIEW_RANGE = 5; 
+	private static int BREEDING_ENERGY = 80;
+	private static final ImageIcon hyenaImage = Util.loadImage("hyena.gif");
 	
 	public int energy;
 	
-	public Bear(Location initialLocation){
+	public Hyena(Location initialLocation){
 		this.location = initialLocation;
 		this.energy = INITIAL_ENERGY;
 	}
@@ -39,7 +39,7 @@ public class Bear implements ArenaAnimal {
 
 	@Override
 	public LivingItem breed() {
-		Bear child = new Bear(location);
+		Hyena child = new Hyena(location);
 		child.energy = energy/2;
 		energy = energy/2;
 		return child;
@@ -63,42 +63,53 @@ public class Bear implements ArenaAnimal {
 
 	@Override
 	public ImageIcon getImage() {
-		return bearImage;
+		return hyenaImage;
 	}
 
 	@Override
 	public String getName() {
 		Random r = new Random();
-		String pre;
-		String post = " Bear";
-		switch(r.nextInt(7)){
+		String name;
+		switch(r.nextInt(12)){
 		case 0:
-			pre = "Polar";
+			name = "Stan";
 			break;
 		case 1:
-			pre = "Grizzly";
+			name = "Kyle";
 			break;
 		case 2:
-			pre = "Black";
+			name = "Eric";
 			break;
 		case 3:
-			pre = "Brown";
+			name = "Kenny";
 			break;
 		case 4:
-			pre = "Koala"; //My 2nd favorite type
+			name = "Mr. Hankey";
 			break;
 		case 5:
-			pre = "Gummy"; //My first
+			name = "Mr. Garrison";
 			break;
 		case 6:
-			pre = "Panda";
+			name = "P.C. Principal";
+			break;
+		case 7:
+			name = "Jimmy";
+			break;
+		case 8:
+			name = "Craig";
+			break;
+		case 9:
+			name = "Butters";
+			break;
+		case 10:
+			name = "Randy";
 			break;
 		default:
-			pre = "Fuzzy Wuzzy was a";
+			name = "Token";
 		}
 		
-		return pre + post;
 		
+		return name;
 	}
 
 	@Override
@@ -140,10 +151,10 @@ public class Bear implements ArenaAnimal {
 
 	@Override
 	public Command getNextAction(World world) {
-		energy = energy - 3; //You try dragging around all that weight
+		energy = energy - 1;
 		Direction d = null;
 		
-		if(getEnergy() >= 360){
+		if(getEnergy() >= 100){
 			Location x = Util.getRandomEmptyAdjacentLocation(world, location);
 			if(x != null)
 				return new BreedCommand(this, x);
@@ -195,8 +206,6 @@ public class Bear implements ArenaAnimal {
 				return new MoveCommand(this, new Location(location.getX(), location.getY() - 1));
 		}
 		
-		//Don't waste all that energy if you're just waiting, just hibernate!
-		energy = energy + 2; 
 		return new WaitCommand();
 	}
 

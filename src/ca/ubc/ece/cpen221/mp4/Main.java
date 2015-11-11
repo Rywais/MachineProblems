@@ -59,6 +59,7 @@ public class Main {
 		addFoxes(world);
 		addTigers(world);
 		addBears(world);
+		addHyenas(world);
 		// TODO: You may add your own creatures here!
 	}
 
@@ -113,6 +114,15 @@ public class Main {
 			Bear bear = new Bear(loc);
 			world.addItem(bear);
 			world.addActor(bear);
+		}
+	}
+	
+	private void addHyenas(World world) {
+		for (int i = 0; i < INITIAL_BEARS; i++) {
+			Location loc = Util.getRandomEmptyLocation(world);
+			Hyena hyena = new Hyena(loc);
+			world.addItem(hyena);
+			world.addActor(hyena);
 		}
 	}
 }
