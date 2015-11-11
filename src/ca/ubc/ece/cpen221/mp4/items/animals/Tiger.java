@@ -66,7 +66,7 @@ public class Tiger implements ArenaAnimal {
 
 	@Override
 	public String getName() {
-		return "Area under the Gaussiam squared"; 
+		return "Area under the Gaussiam, squared"; 
 		//That's Pi, but he also goes by Big P once you get to know him
 	}
 
