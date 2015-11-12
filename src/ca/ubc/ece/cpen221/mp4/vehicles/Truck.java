@@ -11,14 +11,14 @@ import ca.ubc.ece.cpen221.mp4.World;
 import ca.ubc.ece.cpen221.mp4.commands.*;
 import ca.ubc.ece.cpen221.mp4.items.Item;
 
-public class Car implements ArenaVehicle{
+public class Truck implements ArenaVehicle{
 
-	private static final int ACCELERATION = 2;
-	private static final int STRENGTH = 300;
-	private static final int MAX_SPEED = 7;
-	private static final int MAX_TURNING_SPEED = 4;
-	private static final int INITIAL_GAS = 250;
-	private static final int VIEW_RANGE = 10;
+	private static final int ACCELERATION = 1;
+	private static final int STRENGTH = 1100;
+	private static final int MAX_SPEED = 5;
+	private static final int MAX_TURNING_SPEED = 2;
+	private static final int INITIAL_GAS = 400;
+	private static final int VIEW_RANGE = 8;
 	private static final Random r = new Random();
 	
 	private int gas;
@@ -26,9 +26,9 @@ public class Car implements ArenaVehicle{
 	Direction currentDirection;
 	
 	private Location location;
-	private static final ImageIcon carImage = Util.loadImage("cars.gif");
+	private static final ImageIcon carImage = Util.loadImage("trucks.gif");
 	
-	public Car(Location loc){
+	public Truck(Location loc){
 		this.location = loc;
 		this.gas = INITIAL_GAS;
 		this.speed = 0;
@@ -50,6 +50,7 @@ public class Car implements ArenaVehicle{
 		gas--;
 		
 		if(detectCollision(world, currentDirection) == 0){
+			
 			int rNum = r.nextInt(3);
 			if(rNum == 1)
 				accelerate();
@@ -174,6 +175,7 @@ public class Car implements ArenaVehicle{
 
 	@Override
 	public void moveTo(Location targetLocation) {
+		
 		location = targetLocation;
 	}
 
@@ -238,6 +240,7 @@ public class Car implements ArenaVehicle{
 	
 	@Override
 	public void accelerate(){
+		
 		speed = Math.min(MAX_SPEED, speed + ACCELERATION);
 	}
 	
@@ -310,8 +313,10 @@ public class Car implements ArenaVehicle{
 		}
 		
 		if(collisionDist > VIEW_RANGE){
+			
 			return 0;
 		}
+		
 		return collisionDist;
 			
 	}

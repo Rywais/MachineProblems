@@ -8,7 +8,7 @@ import ca.ubc.ece.cpen221.mp4.items.Grass;
 import ca.ubc.ece.cpen221.mp4.items.animals.*;
 import ca.ubc.ece.cpen221.mp4.staff.WorldImpl;
 import ca.ubc.ece.cpen221.mp4.staff.WorldUI;
-import ca.ubc.ece.cpen221.mp4.vehicles.Car;
+import ca.ubc.ece.cpen221.mp4.vehicles.*;
 
 /**
  * The Main class initialize a world with some {@link Grass}, {@link Rabbit}s,
@@ -54,15 +54,16 @@ public class Main {
 	public void initialize(World world) {
 		addGrass(world);
 		world.addActor(new Gardener());
-		/*
+		
 		addGnats(world);
 		addRabbits(world);
 		addFoxes(world);
 		addTigers(world);
 		addBears(world);
 		addHyenas(world);
-		*/
 		addCars(world);
+		addMotorcycles(world);
+		addTrucks(world);
 		// TODO: You may add your own creatures here!
 	}
 
@@ -126,6 +127,26 @@ public class Main {
 			Car car = new Car(loc);
 			world.addItem(car);
 			world.addActor(car);
+			System.out.println("Done!");
+		}
+	}
+	
+	private void addMotorcycles(World world) {
+		for (int i = 0; i < INITIAL_MOTORCYCLES; i++) {
+			Location loc = Util.getRandomEmptyLocation(world);
+			Motorcycle motorcycle = new Motorcycle(loc);
+			world.addItem(motorcycle);
+			world.addActor(motorcycle);
+			System.out.println("Done!");
+		}
+	}
+	
+	private void addTrucks(World world) {
+		for (int i = 0; i < INITIAL_TRUCKS; i++) {
+			Location loc = Util.getRandomEmptyLocation(world);
+			Truck truck = new Truck(loc);
+			world.addItem(truck);
+			world.addActor(truck);
 			System.out.println("Done!");
 		}
 	}
