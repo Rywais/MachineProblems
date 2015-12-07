@@ -146,6 +146,10 @@ public class Algorithms {
 		return null;
 	}
 	
+	
+	//TODO: Make all below functions private for final release
+	
+	
 	/**
 	 * Determines the closest centroid to a restaurant
 	 */
