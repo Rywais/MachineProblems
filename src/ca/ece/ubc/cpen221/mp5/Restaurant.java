@@ -11,7 +11,7 @@ public class Restaurant {
 	private String url, businessID, name, state, type, city, fullAddress, photoURL;
 	private Set<String> neighborhoods, categories, schools;
 	private double latitude, longitude, stars;
-	private int reviewCount, price;
+	private long reviewCount, price;
 	
 	//boolean get/set methods:
 	
@@ -167,19 +167,19 @@ public class Restaurant {
 	
 	//get/set methods for int values
 	
-	public void setReviewCount(int reviewCount){
-		this.reviewCount = reviewCount;
+	public void setReviewCount(long l){
+		this.reviewCount = l;
 	}
 	
-	public void setPrice(int price){
-		this.price = price;
+	public void setPrice(long l){
+		this.price = l;
 	}
 	
-	public int getReviewCount(){
+	public long getReviewCount(){
 		return reviewCount;
 	}
 	
-	public int getPrice(){
+	public long getPrice(){
 		return price;
 	}
 	
