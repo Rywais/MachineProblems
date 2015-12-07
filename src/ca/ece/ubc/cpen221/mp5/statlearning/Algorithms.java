@@ -107,9 +107,33 @@ public class Algorithms {
 		return returnVal;
 	}
 
+	/**
+	 * Returns a string written in JSON format which represents the clusters
+	 * of restaurants provided from the list of restaurant clusters.
+	 * @param clusters is the list of restaurant clusters.
+	 * @return a string in JSON format which represents the list of clusters
+	 */
 	public static String convertClustersToJSON(List<Set<Restaurant>> clusters) {
 		// TODO: Implement this method
-		return null;
+		
+		if(clusters.size() == 0)
+			return "";
+		
+		String returnVal = "[";
+		
+		//For all clusters...
+		for(int i = 0; i < clusters.size(); i++){
+			//For all restaurants in each cluster, add the JSON formatted
+			//String to the return value
+			for(Restaurant r: clusters.get(i)){
+				returnVal = returnVal + restaurantStringJSON(i+1,1.0,r) + ", ";
+			}
+		}
+		
+		returnVal = returnVal.substring(0,returnVal.length() - 2);//Trim extra ", "
+		returnVal = returnVal + "]";
+		
+		return returnVal;
 	}
 
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
@@ -152,6 +176,26 @@ public class Algorithms {
 		double returnVal = Math.pow(r.getLatitude() - c.getLatitude(),2);
 		returnVal += Math.pow(r.getLongitude() - c.getLongitude(), 2);
 		returnVal = Math.sqrt(returnVal);
+		return returnVal;
+	}
+
+
+	/**
+	 * Returns a string representing a restaurant's info in JSON format
+	 * expressed in terms voronoi can interpret
+	 * @param cluster is the cluster number (ID)
+	 * @param weight is the restaurant's weight
+	 * @param r is the restaurant object
+	 * @return The formatted string.
+	 */
+	public static String restaurantStringJSON(int cluster, double weight, Restaurant r) {
+		
+		String returnVal = "{";
+		returnVal = returnVal + "\"x\": " + r.getLatitude();
+		returnVal = returnVal + ", \"y\": " + r.getLongitude();
+		returnVal = returnVal + ", \"name\": \"" + r.getName() + "\"";
+		returnVal = returnVal + ", \"cluster\": " + cluster;
+		returnVal = returnVal + ", \"weight\": " + weight + "}";
 		return returnVal;
 	}
 }
