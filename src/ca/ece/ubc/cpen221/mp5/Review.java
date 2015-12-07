@@ -26,7 +26,7 @@ public class Review {
 		this.stars = stars;
 	}
 	
-	void setType(String type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -102,7 +102,7 @@ public class Review {
 		return funnyVotes;
 	}
 
-	int getStars() {
+	public int getStars() {
 		return stars;
 	}
 	

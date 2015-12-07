@@ -18,7 +18,6 @@ public class Algorithms {
 	 * @return A List of sets, with each set representing a cluster of restaurants.
 	 */
 	public static List<Set<Restaurant>> kMeansClustering(int k, RestaurantDB db) {
-		// TODO: Implement this method
 		Centroid[] centroids = new Centroid[k];
 		double maxLat, minLat, maxLong, minLong, latSpan, longSpan;
 		
@@ -138,7 +137,23 @@ public class Algorithms {
 
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
 		// TODO: Implement this method
-		return null;
+		double S_xx, S_xy, meanX, meanY;
+		
+		//TODO: Use proper method to get all the user's reviews
+		Set<Review> userReviews = new HashSet<Review>();
+		
+		//S_vals = [S_xx, S_xy, S_yy, meanX, meanY]
+		double[] S_vals = getSValues(userReviews, db, featureFunction);
+		
+		S_xx = S_vals[0];
+		S_xy = S_vals[1];
+		meanX = S_vals[3];
+		meanY = S_vals[4];
+		
+		double slope = S_xy / S_xx;
+		double intercept = meanY - (meanX * slope);
+		
+		return new LinRegFunction(slope,intercept,featureFunction);
 	}
 
 	public static MP5Function getBestPredictor(User u, RestaurantDB db, List<MP5Function> featureFunctionList) {
@@ -200,6 +215,55 @@ public class Algorithms {
 		returnVal = returnVal + ", \"name\": \"" + r.getName() + "\"";
 		returnVal = returnVal + ", \"cluster\": " + cluster;
 		returnVal = returnVal + ", \"weight\": " + weight + "}";
+		return returnVal;
+	}
+	
+	/**
+	 * Returns an array containing the S-values associated with a users review
+	 * history and a specified featureFunction.
+	 * @param userReviews is the set of the users reviews
+	 * @param db is the restaurant Database
+	 * @param featureFunction is the chosen feaureFunction
+	 * @return an array containing the S values represented internally as:
+	 * [S_xx, S_xy, S_yy, meanX, meanY]
+	 */
+	public static double[] getSValues(Set<Review> userReviews, RestaurantDB db, MP5Function featureFunction){
+
+		double S_xx = 0.0, S_xy = 0.0, S_yy = 0.0, meanX = 0.0, meanY = 0.0, count = 0.0;
+
+		//Sum up all the x and y values (for mean calculation)
+		for(Review r : userReviews){
+			//This inner loop should only ever iterate over the one restaurant found
+			//TODO: Use proper query
+			for(Restaurant restaurant: db.query("Restaurant with proper ID")){
+				if(featureFunction.f(restaurant, db) != -10000.0){
+					count += 1.0;
+					meanX += featureFunction.f(restaurant, db);
+					meanY += r.getStars();
+				}
+			}
+		}//End summation
+		
+		//Give the means their final values
+		meanX = meanX / count;
+		meanY = meanY / count;
+		
+		//Calculate S_xx, S_xy, S_yy
+		for(Review r : userReviews){
+			//This inner loop should only ever iterate over the one restaurant found
+			//TODO: Use proper query
+			for(Restaurant restaurant: db.query("Restaurant with proper ID")){
+				if(featureFunction.f(restaurant, db) != -10000.0){
+					S_xx += Math.pow((featureFunction.f(restaurant, db) - meanX),2);
+					S_xy += (featureFunction.f(restaurant,db) - meanX) *
+							(r.getStars() - meanY);
+					S_yy += Math.pow((r.getStars() - meanY), 2);
+				}
+			}
+		}//End summation
+		
+		double[] returnVal = {S_xx, S_xy, S_yy, meanX, meanY};
+		
 		return returnVal;
 	}
 }
