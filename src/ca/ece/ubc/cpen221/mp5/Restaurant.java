@@ -183,4 +183,27 @@ public class Restaurant {
 		return price;
 	}
 	
+	//New equals and hashCode methods
+	
+	@Override
+	public boolean equals(Object o){
+		
+		if(!(o instanceof Restaurant))
+			return false;
+		
+		Restaurant other = (Restaurant) o;
+		
+		if(other.getBusinessID().equals(this.getBusinessID()))
+			return true;
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		int returnVal = ((int) businessID.charAt(0)) << 16;
+		returnVal += businessID.charAt(1);
+		return returnVal;
+	}
+	
 }

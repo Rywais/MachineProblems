@@ -96,4 +96,26 @@ public class User {
 	public double getAverageStars(){
 		return averageStars;
 	}
+	
+	//New methods for equals & hashCode
+	
+	@Override
+	public boolean equals(Object o){
+		if(!(o instanceof User))
+			return false;
+		
+		User other = (User) o;
+		
+		if(other.getUserID() == userID)
+			return true;
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		int hash = ((int) userID.charAt(0)) << 16;
+		hash += (int) userID.charAt(1);
+		return hash;
+	}
 }

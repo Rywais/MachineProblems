@@ -81,4 +81,25 @@ public class Centroid {
 		return returnVal;
 	}
 	
+	//New methods for equals and hashCode
+	
+	@Override
+	public boolean equals(Object o){
+		if(!(o instanceof Centroid))
+			return false;
+		
+		Centroid other = (Centroid) o;
+		
+		if(other.getLatitude() == this.latitude && other.getLongitude() == this.longitude)
+			return true;
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		Double hash = latitude * longitude;
+		return hash.hashCode();
+	}
+	
 }

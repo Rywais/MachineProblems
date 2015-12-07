@@ -106,4 +106,26 @@ public class Review {
 		return stars;
 	}
 	
+	//New equals and hashCode methods
+	
+	@Override
+	public boolean equals(Object o){
+		if(!(o instanceof Review))
+			return false;
+		
+		Review other = (Review) o;
+		
+		if(other.getReviewID() == reviewID)
+			return true;
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		int hash = ((int) reviewID.charAt(0)) << 16;
+		hash += (int) reviewID.charAt(1);
+		return hash;
+	}
+	
 }
