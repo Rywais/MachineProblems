@@ -136,7 +136,6 @@ public class Algorithms {
 	}
 
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
-		// TODO: Implement this method
 		double S_xx, S_xy, meanX, meanY;
 		
 		//TODO: Use proper method to get all the user's reviews
@@ -158,7 +157,29 @@ public class Algorithms {
 
 	public static MP5Function getBestPredictor(User u, RestaurantDB db, List<MP5Function> featureFunctionList) {
 		// TODO: Implement this method
-		return null;
+		
+		double bestR_squared = -1.0;
+		double[] S_vals;
+		int bestR_squaredIndex = 0;
+		//TODO: Use the proper method of getting the list of user reviews
+		Set<Review> userReviews = new HashSet<Review>();
+		
+		//Find the list index associated with the best R-Squared value
+		for(int i = 0; i < featureFunctionList.size(); i++){
+			//S_vals = [S_xx, S_xy, S_yy, meanX, meanY]
+			S_vals = getSValues(userReviews, db, featureFunctionList.get(i));
+			double R_squared = Math.pow(S_vals[1], 2.0) / (S_vals[0] * S_vals[2]); 
+			if(R_squared > bestR_squared){
+				bestR_squared = R_squared;
+				bestR_squaredIndex = i;
+			}
+		}
+		
+		S_vals = getSValues(userReviews, db, featureFunctionList.get(bestR_squaredIndex));
+		double slope = S_vals[1] / S_vals[0];
+		double intercept = S_vals[4] - (slope * S_vals[3]);
+		
+		return new LinRegFunction(slope,intercept,featureFunctionList.get(bestR_squaredIndex));
 	}
 	
 	
