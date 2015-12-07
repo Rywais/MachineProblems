@@ -62,8 +62,8 @@ public class Algorithms {
 		//Create new centroids to be pseudo-randomly distributed with 
 		//latitudes between minLat & maxLat, and longitudes between
 		//minLong & maxLong
-		for(Centroid c : centroids){
-			c = new Centroid(minLat + (latSpan * random.nextDouble()),
+		for(int i = 0; i < centroids.length; i++){
+			centroids[i] = new Centroid(minLat + (latSpan * random.nextDouble()),
 					minLong + (longSpan * random.nextDouble()));
 		}
 		
