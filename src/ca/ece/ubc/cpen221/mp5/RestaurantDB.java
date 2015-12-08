@@ -69,6 +69,7 @@ public class RestaurantDB {
 		users = new File(usersJSONfilename);
 	}
 	
+	/*
 	public static void main(String[] args) 
 			throws ParseException, IOException {
 		BufferedReader inRest = new BufferedReader(new FileReader(restaurants));
@@ -93,6 +94,7 @@ public class RestaurantDB {
 		//toJSON(result);
 
 	}
+	*/
 
 	public static Set<Restaurant> query(String queryString) {
 		parse(queryString);

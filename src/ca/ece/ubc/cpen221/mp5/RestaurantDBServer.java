@@ -43,7 +43,7 @@ public class RestaurantDBServer {
 	
 	/**
 	 * Launches the Database Server as it currently exists
-	 * @param args
+	 * @param args DO NOT USE
 	 */
 	public static void main(String args[]){
 		RestaurantDBServer myServer = new RestaurantDBServer(7979,restaurantData,reviewData,userData);
