@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,12 @@ public class RestaurantDB {
 	private static Set<Restaurant> setRest = new HashSet<Restaurant>();
 	private static Set<Review> setReview = new HashSet<Review>();
 	private static Set<User> setUser = new HashSet<User>();
+	//private static Map<String, List<String>> queryMap = new HashMap<String, List<String>>();
+	private static Map<String, String> queryMap = new HashMap<String, String>();
+	private static List<String> list = new ArrayList<String>();
+	private static List<String> copy = new ArrayList<String>();
+	private static Stack<String> stack = new Stack<String>();
+	
 	
 	/**
 	 * Create a database from the Yelp dataset given the names of three files:
@@ -165,24 +172,22 @@ public class RestaurantDB {
 		setUser.add(user);
 	}
 	
-	public static void parse(String queryString) {
+	public static Map<String, String> parse(String queryString) {
 		CharStream stream = new ANTLRInputStream(queryString);
 		QueryLexer lexer = new QueryLexer(stream);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		//tokens.setTokenSource(lexer);
 		QueryParser parser = new QueryParser(tokens);
-		
+		parser.reportErrorsAsExceptions();
 		ParseTree tree = parser.root();
-		/*ParseTreePattern p = parser.compileParseTreePattern(queryString, QueryParser.RULE_root, lexer);
-		ParseTreeMatch m = p.match(tree);
-		String name = m.get("name");*/
 		System.err.println(tree.toStringTree(parser));
 		ParseTreeWalker walker = new ParseTreeWalker();
-		//QueryListener_QueryCreator listener = new QueryListener_QueryCreator();
-		QueryListener listener = new QueryListenerPrintEverything();
+		QueryListener_QueryCreator listener = new QueryListener_QueryCreator();
+		QueryListener listen = new QueryListenerPrintEverything();
         walker.walk(listener, tree);
+        //walker.walk(listen, tree);
         
-		//return listener.getQuery();
+		return queryMap;
 	}
 	
 	private static class QueryListenerPrintEverything extends QueryBaseListener {
@@ -210,12 +215,12 @@ public class RestaurantDB {
 	    public void exitAtom(QueryParser.AtomContext ctx) {
 	        System.err.println("exiting atom");
 	    }
-	    /*public void enterString(QueryParser.StringContext ctx) {
+	    public void enterString(QueryParser.StringContext ctx) {
 	    	System.err.println("entering string");
 	    }
 	    public void exitString(QueryParser.StringContext ctx) {
 	        System.err.println("exiting string");
-	    }*/
+	    }
 	    public void enterIn(QueryParser.InContext ctx) {
 	        System.err.println("entering in");
 	    }
@@ -249,43 +254,149 @@ public class RestaurantDB {
 
 	}
 	
-	/*private static class queryListener_queryCreator extends queryBaseListener {
-	    private Stack<query> stack = new Stack<query>();
-	    
-	    @Override
-	    public void exitLiteral(queryParser.LiteralContext ctx) {
-	        query literal = new BooleanLiteral(ctx.start.getType() == queryLexer.TRUE);
-	        stack.push(literal);
-	    }
-	    
-	    @Override
-	    public void exitConjunction(FormulaParser.ConjunctionContext ctx) {
-	        if (ctx.AND() != null) {
-	            // we matched the AND rule
-	            Formula right = stack.pop();
-	            Formula left = stack.pop();
-	            Formula and = new And(left, right);
-	            stack.push(and);
+	private static class QueryListener_QueryCreator extends QueryBaseListener {
+	   
+		@Override
+	    public void exitRange(QueryParser.RangeContext ctx) {
+	        if (ctx.RANGE() != null) {
+	        	String string = ctx.getText();
+	        	stack.push(string);
+
+	            System.out.println(string);
 	        } else {
-	            // do nothing, because we just matched a literal and its BooleanLiteral is already on the stack
+	            // do nothing
+	        }
+	    }
+		
+		@Override
+	    public void exitDotprice(QueryParser.DotpriceContext ctx) {
+	        if (ctx.DOTS() != null) {
+	        	if(!queryMap.containsKey("price from")) {
+        			queryMap.put("price from", stack.pop());
+        		}
+	        } 
+	    }
+		
+		@Override
+	    public void exitDotrating(QueryParser.DotratingContext ctx) {
+	        if (ctx.DOTS() != null) {
+	        	if(!queryMap.containsKey("rating from")) {
+        			queryMap.put("rating from", stack.pop());
+        		}
+	        } 
+	    }
+		
+		@Override
+	    public void exitString(QueryParser.StringContext ctx) {
+	        if (ctx.TEXT() != null) {
+	        	String string = ctx.getText();
+	        	stack.push(string);
+
+	            System.out.println(string);
+	        } else {
+	            // do nothing
 	        }
 	    }
 	    
 	    @Override
-	    public void exitQuery(queryParser.queryContext ctx) {
+	    public void exitIn(QueryParser.InContext ctx) {
+	    	int i = 1;
+	    	if (ctx.IN() != null) {
+	        	if(!stack.isEmpty()) {
+	        		if(!queryMap.containsKey("neighborhood")) {
+	        			queryMap.put("neighborhood", stack.pop());  
+	        		}
+	        		else {
+	        			queryMap.put("neighborhood" + i, stack.pop());
+	        			i++;
+	        		}
+	        	}
+	        	
+	        	System.out.println(queryMap);
+	        } else {
+	            // do nothing
+	        }
+	     }
+	    
+	    @Override
+	    public void exitCategory(QueryParser.CategoryContext ctx) {
+	    	int i = 1;
+	    	if (ctx.CATEGORY() != null) {
+	        	if(!stack.isEmpty()) {
+	        		if(!queryMap.containsKey("category")) {
+	        			queryMap.put("category", stack.pop());
+	        		}
+	        		else {
+	        			queryMap.put("category" + i, stack.pop());
+	        			i++;
+	        		}
+	        	}
+	        	System.out.println(queryMap);
+	        } else {
+	            // do nothing
+	        }
+	    }
+	    
+	    @Override
+	    public void exitName(QueryParser.NameContext ctx) {
+	    	int i = 1;
+	    	if (ctx.NAME() != null) {
+	        	if(!stack.isEmpty()) {
+	        		if(!queryMap.containsKey("name")) {
+	        			queryMap.put("name", stack.pop());
+	        		}
+	        		else {
+	        			queryMap.put("name" + i, stack.pop());
+	        			i++;
+	        		}
+	        	}
+	        	System.out.println(queryMap);
+	        } else {
+	            // do nothing
+	        }
+	    }
+	    
+	    @Override
+	    public void exitPrice(QueryParser.PriceContext ctx) {
+	    	if (ctx.PRICE() != null) {
+	        	if(!stack.isEmpty()) {
+	        		if(!queryMap.containsKey("price to")) {
+	        			queryMap.put("price to", stack.pop());
+	        		}
+	           	}
+	        	System.out.println(queryMap);
+	        } else {
+	            // do nothing
+	        }
+	    }
+	    
+	    @Override
+	    public void exitRating(QueryParser.RatingContext ctx) {
+	    	if (ctx.RATING() != null) {
+	        	if(!stack.isEmpty()) {
+	        		if(!queryMap.containsKey("rating to")) {
+	        			queryMap.put("rating to", stack.pop());
+	        		}
+	        	}
+	        	System.out.println(queryMap);
+	        } else {
+	            // do nothing
+	        }
+	    }
+	    
+	    @Override
+	    public void exitRoot(QueryParser.RootContext ctx) {
 	        // do nothing, because the top of the stack should have the node already in it
 	        assert stack.size() == 1;
 	    }
 	    
-	    public query getQuery() {
-	        return stack.get(0);
-	    }
+	  
 	}
 
 	
 	public void richQueries(String queryString) {
 		
-	}*/
+	}
 	
 	public Set<Restaurant> getRestaurantSet(){
 		return new HashSet<Restaurant>(setRest);

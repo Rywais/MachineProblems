@@ -99,4 +99,44 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitName(QueryParser.NameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#string}.
+	 * @param ctx the parse tree
+	 */
+	void enterString(QueryParser.StringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#string}.
+	 * @param ctx the parse tree
+	 */
+	void exitString(QueryParser.StringContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#dotrating}.
+	 * @param ctx the parse tree
+	 */
+	void enterDotrating(QueryParser.DotratingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#dotrating}.
+	 * @param ctx the parse tree
+	 */
+	void exitDotrating(QueryParser.DotratingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#dotprice}.
+	 * @param ctx the parse tree
+	 */
+	void enterDotprice(QueryParser.DotpriceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#dotprice}.
+	 * @param ctx the parse tree
+	 */
+	void exitDotprice(QueryParser.DotpriceContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#range}.
+	 * @param ctx the parse tree
+	 */
+	void enterRange(QueryParser.RangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#range}.
+	 * @param ctx the parse tree
+	 */
+	void exitRange(QueryParser.RangeContext ctx);
 }

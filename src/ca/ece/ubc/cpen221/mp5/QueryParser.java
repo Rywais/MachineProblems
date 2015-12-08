@@ -23,10 +23,11 @@ public class QueryParser extends Parser {
 		DOTS=10, LPAREN=11, RPAREN=12, WHITESPACE=13;
 	public static final int
 		RULE_root = 0, RULE_orExpr = 1, RULE_andExpr = 2, RULE_atom = 3, RULE_in = 4, 
-		RULE_category = 5, RULE_rating = 6, RULE_price = 7, RULE_name = 8;
+		RULE_category = 5, RULE_rating = 6, RULE_price = 7, RULE_name = 8, RULE_string = 9, 
+		RULE_dotrating = 10, RULE_dotprice = 11, RULE_range = 12;
 	public static final String[] ruleNames = {
 		"root", "orExpr", "andExpr", "atom", "in", "category", "rating", "price", 
-		"name"
+		"name", "string", "dotrating", "dotprice", "range"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -133,21 +134,21 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(21);
+			setState(29);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IN) | (1L << NAME) | (1L << RATING) | (1L << CATEGORY) | (1L << PRICE) | (1L << LPAREN))) != 0)) {
 				{
 				{
-				setState(18);
+				setState(26);
 				orExpr();
 				}
 				}
-				setState(23);
+				setState(31);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(24);
+			setState(32);
 			match(EOF);
 			}
 		}
@@ -194,21 +195,21 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(34);
 			andExpr();
-			setState(31);
+			setState(39);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==OR) {
 				{
 				{
-				setState(27);
+				setState(35);
 				match(OR);
-				setState(28);
+				setState(36);
 				andExpr();
 				}
 				}
-				setState(33);
+				setState(41);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -257,21 +258,21 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(34);
+			setState(42);
 			atom();
-			setState(39);
+			setState(47);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==AND) {
 				{
 				{
-				setState(35);
+				setState(43);
 				match(AND);
-				setState(36);
+				setState(44);
 				atom();
 				}
 				}
-				setState(41);
+				setState(49);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -327,51 +328,51 @@ public class QueryParser extends Parser {
 		AtomContext _localctx = new AtomContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_atom);
 		try {
-			setState(51);
+			setState(59);
 			switch (_input.LA(1)) {
 			case IN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(42);
+				setState(50);
 				in();
 				}
 				break;
 			case CATEGORY:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(43);
+				setState(51);
 				category();
 				}
 				break;
 			case RATING:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(44);
+				setState(52);
 				rating();
 				}
 				break;
 			case PRICE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(45);
+				setState(53);
 				price();
 				}
 				break;
 			case NAME:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(46);
+				setState(54);
 				name();
 				}
 				break;
 			case LPAREN:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(47);
+				setState(55);
 				match(LPAREN);
-				setState(48);
+				setState(56);
 				orExpr();
-				setState(49);
+				setState(57);
 				match(RPAREN);
 				}
 				break;
@@ -393,7 +394,9 @@ public class QueryParser extends Parser {
 	public static class InContext extends ParserRuleContext {
 		public TerminalNode IN() { return getToken(QueryParser.IN, 0); }
 		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode TEXT() { return getToken(QueryParser.TEXT, 0); }
+		public StringContext string() {
+			return getRuleContext(StringContext.class,0);
+		}
 		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
 		public InContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -415,13 +418,13 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
+			setState(61);
 			match(IN);
-			setState(54);
+			setState(62);
 			match(LPAREN);
-			setState(55);
-			match(TEXT);
-			setState(56);
+			setState(63);
+			string();
+			setState(64);
 			match(RPAREN);
 			}
 		}
@@ -439,7 +442,9 @@ public class QueryParser extends Parser {
 	public static class CategoryContext extends ParserRuleContext {
 		public TerminalNode CATEGORY() { return getToken(QueryParser.CATEGORY, 0); }
 		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode TEXT() { return getToken(QueryParser.TEXT, 0); }
+		public StringContext string() {
+			return getRuleContext(StringContext.class,0);
+		}
 		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
 		public CategoryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -461,13 +466,13 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(58);
+			setState(66);
 			match(CATEGORY);
-			setState(59);
+			setState(67);
 			match(LPAREN);
-			setState(60);
-			match(TEXT);
-			setState(61);
+			setState(68);
+			string();
+			setState(69);
 			match(RPAREN);
 			}
 		}
@@ -485,11 +490,15 @@ public class QueryParser extends Parser {
 	public static class RatingContext extends ParserRuleContext {
 		public TerminalNode RATING() { return getToken(QueryParser.RATING, 0); }
 		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public List<TerminalNode> RANGE() { return getTokens(QueryParser.RANGE); }
-		public TerminalNode RANGE(int i) {
-			return getToken(QueryParser.RANGE, i);
+		public List<RangeContext> range() {
+			return getRuleContexts(RangeContext.class);
 		}
-		public TerminalNode DOTS() { return getToken(QueryParser.DOTS, 0); }
+		public RangeContext range(int i) {
+			return getRuleContext(RangeContext.class,i);
+		}
+		public DotratingContext dotrating() {
+			return getRuleContext(DotratingContext.class,0);
+		}
 		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
 		public RatingContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -511,17 +520,17 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
+			setState(71);
 			match(RATING);
-			setState(64);
+			setState(72);
 			match(LPAREN);
-			setState(65);
-			match(RANGE);
-			setState(66);
-			match(DOTS);
-			setState(67);
-			match(RANGE);
-			setState(68);
+			setState(73);
+			range();
+			setState(74);
+			dotrating();
+			setState(75);
+			range();
+			setState(76);
 			match(RPAREN);
 			}
 		}
@@ -539,11 +548,15 @@ public class QueryParser extends Parser {
 	public static class PriceContext extends ParserRuleContext {
 		public TerminalNode PRICE() { return getToken(QueryParser.PRICE, 0); }
 		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public List<TerminalNode> RANGE() { return getTokens(QueryParser.RANGE); }
-		public TerminalNode RANGE(int i) {
-			return getToken(QueryParser.RANGE, i);
+		public List<RangeContext> range() {
+			return getRuleContexts(RangeContext.class);
 		}
-		public TerminalNode DOTS() { return getToken(QueryParser.DOTS, 0); }
+		public RangeContext range(int i) {
+			return getRuleContext(RangeContext.class,i);
+		}
+		public DotpriceContext dotprice() {
+			return getRuleContext(DotpriceContext.class,0);
+		}
 		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
 		public PriceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -565,17 +578,17 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(70);
+			setState(78);
 			match(PRICE);
-			setState(71);
+			setState(79);
 			match(LPAREN);
-			setState(72);
-			match(RANGE);
-			setState(73);
-			match(DOTS);
-			setState(74);
-			match(RANGE);
-			setState(75);
+			setState(80);
+			range();
+			setState(81);
+			dotprice();
+			setState(82);
+			range();
+			setState(83);
 			match(RPAREN);
 			}
 		}
@@ -593,7 +606,9 @@ public class QueryParser extends Parser {
 	public static class NameContext extends ParserRuleContext {
 		public TerminalNode NAME() { return getToken(QueryParser.NAME, 0); }
 		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode TEXT() { return getToken(QueryParser.TEXT, 0); }
+		public StringContext string() {
+			return getRuleContext(StringContext.class,0);
+		}
 		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
 		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -615,13 +630,13 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77);
+			setState(85);
 			match(NAME);
-			setState(78);
+			setState(86);
 			match(LPAREN);
-			setState(79);
-			match(TEXT);
-			setState(80);
+			setState(87);
+			string();
+			setState(88);
 			match(RPAREN);
 			}
 		}
@@ -636,28 +651,178 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	public static class StringContext extends ParserRuleContext {
+		public TerminalNode TEXT() { return getToken(QueryParser.TEXT, 0); }
+		public StringContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_string; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterString(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitString(this);
+		}
+	}
+
+	public final StringContext string() throws RecognitionException {
+		StringContext _localctx = new StringContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_string);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(90);
+			match(TEXT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DotratingContext extends ParserRuleContext {
+		public TerminalNode DOTS() { return getToken(QueryParser.DOTS, 0); }
+		public DotratingContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_dotrating; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterDotrating(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitDotrating(this);
+		}
+	}
+
+	public final DotratingContext dotrating() throws RecognitionException {
+		DotratingContext _localctx = new DotratingContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_dotrating);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(92);
+			match(DOTS);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DotpriceContext extends ParserRuleContext {
+		public TerminalNode DOTS() { return getToken(QueryParser.DOTS, 0); }
+		public DotpriceContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_dotprice; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterDotprice(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitDotprice(this);
+		}
+	}
+
+	public final DotpriceContext dotprice() throws RecognitionException {
+		DotpriceContext _localctx = new DotpriceContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_dotprice);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(94);
+			match(DOTS);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class RangeContext extends ParserRuleContext {
+		public TerminalNode RANGE() { return getToken(QueryParser.RANGE, 0); }
+		public RangeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_range; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterRange(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitRange(this);
+		}
+	}
+
+	public final RangeContext range() throws RecognitionException {
+		RangeContext _localctx = new RangeContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_range);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(96);
+			match(RANGE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\17U\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\7\2\26"+
-		"\n\2\f\2\16\2\31\13\2\3\2\3\2\3\3\3\3\3\3\7\3 \n\3\f\3\16\3#\13\3\3\4"+
-		"\3\4\3\4\7\4(\n\4\f\4\16\4+\13\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5"+
-		"\5\66\n\5\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\2\2\13\2"+
-		"\4\6\b\n\f\16\20\22\2\2S\2\27\3\2\2\2\4\34\3\2\2\2\6$\3\2\2\2\b\65\3\2"+
-		"\2\2\n\67\3\2\2\2\f<\3\2\2\2\16A\3\2\2\2\20H\3\2\2\2\22O\3\2\2\2\24\26"+
-		"\5\4\3\2\25\24\3\2\2\2\26\31\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30\32"+
-		"\3\2\2\2\31\27\3\2\2\2\32\33\7\2\2\3\33\3\3\2\2\2\34!\5\6\4\2\35\36\7"+
-		"\3\2\2\36 \5\6\4\2\37\35\3\2\2\2 #\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"\5"+
-		"\3\2\2\2#!\3\2\2\2$)\5\b\5\2%&\7\4\2\2&(\5\b\5\2\'%\3\2\2\2(+\3\2\2\2"+
-		")\'\3\2\2\2)*\3\2\2\2*\7\3\2\2\2+)\3\2\2\2,\66\5\n\6\2-\66\5\f\7\2.\66"+
-		"\5\16\b\2/\66\5\20\t\2\60\66\5\22\n\2\61\62\7\r\2\2\62\63\5\4\3\2\63\64"+
-		"\7\16\2\2\64\66\3\2\2\2\65,\3\2\2\2\65-\3\2\2\2\65.\3\2\2\2\65/\3\2\2"+
-		"\2\65\60\3\2\2\2\65\61\3\2\2\2\66\t\3\2\2\2\678\7\6\2\289\7\r\2\29:\7"+
-		"\5\2\2:;\7\16\2\2;\13\3\2\2\2<=\7\t\2\2=>\7\r\2\2>?\7\5\2\2?@\7\16\2\2"+
-		"@\r\3\2\2\2AB\7\b\2\2BC\7\r\2\2CD\7\13\2\2DE\7\f\2\2EF\7\13\2\2FG\7\16"+
-		"\2\2G\17\3\2\2\2HI\7\n\2\2IJ\7\r\2\2JK\7\13\2\2KL\7\f\2\2LM\7\13\2\2M"+
-		"N\7\16\2\2N\21\3\2\2\2OP\7\7\2\2PQ\7\r\2\2QR\7\5\2\2RS\7\16\2\2S\23\3"+
-		"\2\2\2\6\27!)\65";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\17e\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
+		"\f\t\f\4\r\t\r\4\16\t\16\3\2\7\2\36\n\2\f\2\16\2!\13\2\3\2\3\2\3\3\3\3"+
+		"\3\3\7\3(\n\3\f\3\16\3+\13\3\3\4\3\4\3\4\7\4\60\n\4\f\4\16\4\63\13\4\3"+
+		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5>\n\5\3\6\3\6\3\6\3\6\3\6\3\7\3"+
+		"\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t"+
+		"\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3\16\3\16\3\16\2\2\17\2"+
+		"\4\6\b\n\f\16\20\22\24\26\30\32\2\2_\2\37\3\2\2\2\4$\3\2\2\2\6,\3\2\2"+
+		"\2\b=\3\2\2\2\n?\3\2\2\2\fD\3\2\2\2\16I\3\2\2\2\20P\3\2\2\2\22W\3\2\2"+
+		"\2\24\\\3\2\2\2\26^\3\2\2\2\30`\3\2\2\2\32b\3\2\2\2\34\36\5\4\3\2\35\34"+
+		"\3\2\2\2\36!\3\2\2\2\37\35\3\2\2\2\37 \3\2\2\2 \"\3\2\2\2!\37\3\2\2\2"+
+		"\"#\7\2\2\3#\3\3\2\2\2$)\5\6\4\2%&\7\3\2\2&(\5\6\4\2\'%\3\2\2\2(+\3\2"+
+		"\2\2)\'\3\2\2\2)*\3\2\2\2*\5\3\2\2\2+)\3\2\2\2,\61\5\b\5\2-.\7\4\2\2."+
+		"\60\5\b\5\2/-\3\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\7\3\2"+
+		"\2\2\63\61\3\2\2\2\64>\5\n\6\2\65>\5\f\7\2\66>\5\16\b\2\67>\5\20\t\28"+
+		">\5\22\n\29:\7\r\2\2:;\5\4\3\2;<\7\16\2\2<>\3\2\2\2=\64\3\2\2\2=\65\3"+
+		"\2\2\2=\66\3\2\2\2=\67\3\2\2\2=8\3\2\2\2=9\3\2\2\2>\t\3\2\2\2?@\7\6\2"+
+		"\2@A\7\r\2\2AB\5\24\13\2BC\7\16\2\2C\13\3\2\2\2DE\7\t\2\2EF\7\r\2\2FG"+
+		"\5\24\13\2GH\7\16\2\2H\r\3\2\2\2IJ\7\b\2\2JK\7\r\2\2KL\5\32\16\2LM\5\26"+
+		"\f\2MN\5\32\16\2NO\7\16\2\2O\17\3\2\2\2PQ\7\n\2\2QR\7\r\2\2RS\5\32\16"+
+		"\2ST\5\30\r\2TU\5\32\16\2UV\7\16\2\2V\21\3\2\2\2WX\7\7\2\2XY\7\r\2\2Y"+
+		"Z\5\24\13\2Z[\7\16\2\2[\23\3\2\2\2\\]\7\5\2\2]\25\3\2\2\2^_\7\f\2\2_\27"+
+		"\3\2\2\2`a\7\f\2\2a\31\3\2\2\2bc\7\13\2\2c\33\3\2\2\2\6\37)\61=";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
