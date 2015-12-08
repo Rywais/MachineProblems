@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -88,25 +89,26 @@ public class RestaurantDB {
 			createUserDB(lineUser);
 		}
 
-		parse("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
-		//parse("Telegraph Ave");
+		//parse("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
+
 	}
 
 	public Set<Restaurant> query(String queryString) {
-		// TODO: Implement this method
-		// Write specs, etc.
-
-		/*parse(queryString);
-		
-		CharStream stream = new ANTLRInputStream(queryString);
-		queryLexer lexer = new queryLexer(stream);
-		TokenStream tokens = new CommonTokenStream(lexer);
-		
-		queryParser qParser = new queryParser(tokens);
-		
-		ParseTree tree = qParser.root();
-		ParseTreeWalker walker = new ParseTreeWalker();*/
-		
+		parse(queryString);
+		Set<Restaurant> database = this.getRestaurantSet();
+		Set<Restaurant> result = new HashSet<Restaurant>();
+		Set<String> keySet = queryMap.keySet();
+		Iterator keyItr = keySet.iterator();
+		Iterator itr = database.iterator();
+		while(keyItr.hasNext()) {
+			String key = (String) keyItr.next();
+			Restaurant rest = (Restaurant) itr.next();
+			if (rest.getNeighborhoods().contains(queryMap.get("neighborhood"))) {
+				if(rest.getCategories().contains(queryMap.get("category"))) {
+					//queryMap.
+				}
+			}
+		}
 		
 		return null;
 	}

@@ -8,9 +8,11 @@ public class ServerThread implements Runnable {
 	private Socket clientSocket;
 	private static int nextThreadID = 0;
 	private int threadID;
+	private RestaurantDB db;
 	
 	ServerThread(Socket clientSocket, RestaurantDB db){
 		this.clientSocket = clientSocket;
+		this.db = db;
 		threadID = nextThreadID++;
 	}
 	
