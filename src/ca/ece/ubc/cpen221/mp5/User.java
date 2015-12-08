@@ -4,14 +4,14 @@ package ca.ece.ubc.cpen221.mp5;
 
 public class User {
 	private String url, type, userID, name;
-	private int funnyVotes, usefulVotes, coolVotes, reviewCount;
-	private double averageStars;
+	private long funnyVotes, usefulVotes, coolVotes, reviewCount;
+	private double averageStars; 
 	
 	public User(){} //Default constructor
 	
 	//Verbose constructor (Takes all internal values as args)
 	public User(String url, String  type, String userID, String name,
-			int funnyVotes, int usefulVotes, int coolVotes, int reviewCount,
+			long funnyVotes, long usefulVotes, long coolVotes, long reviewCount,
 			double averageStars){
 		
 		this.url = url;
@@ -77,19 +77,19 @@ public class User {
 		return name;
 	}
 	
-	public int getFunnyVotes(){
+	public long getFunnyVotes(){
 		return funnyVotes;
 	}
 	
-	public int getUsefulVotes(){
+	public long getUsefulVotes(){
 		return usefulVotes;
 	}
 	
-	public int getCoolVotes(){
+	public long getCoolVotes(){
 		return coolVotes;
 	}
 	
-	public int getReviewCount(){
+	public long getReviewCount(){
 		return reviewCount;
 	}
 	

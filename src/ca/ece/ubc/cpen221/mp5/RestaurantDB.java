@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
@@ -31,7 +32,9 @@ public class RestaurantDB {
 	private static File reviews = new File("data/reviews.json");
 	private static File users = new File("data/users.json");
 	private static Set<Restaurant> setRest = new HashSet<Restaurant>();
-
+	private static Set<Review> setReview = new HashSet<Review>();
+	private static Set<User> setUser = new HashSet<User>();
+	
 	/**
 	 * Create a database from the Yelp dataset given the names of three files:
 	 * <ul>
@@ -58,56 +61,24 @@ public class RestaurantDB {
 	
 	public static void main(String[] args) 
 			throws ParseException, IOException {
-		BufferedReader in = new BufferedReader(new FileReader(restaurants));
+		BufferedReader inRest = new BufferedReader(new FileReader(restaurants));
+		BufferedReader inReview = new BufferedReader(new FileReader(reviews));
+		BufferedReader inUser = new BufferedReader(new FileReader(users));
 		String inputLine;
-		//int i = 0;
 		JSONParser parser = new JSONParser();
-		while((inputLine = in.readLine()) != null) {
-			Restaurant restaurant = new Restaurant();
-			//System.out.println(inputLine);
-			JSONObject line = (JSONObject)(parser.parse(inputLine));
-			//System.out.println(line);
-			JSONArray categoryJSON = (JSONArray) line.get("categories");
-			JSONArray neighborhoodJSON = (JSONArray) line.get("neighborhoods");
-			JSONArray schoolJSON = (JSONArray) line.get("schools");
-			Set<String> categories = new HashSet<String>();
-			Set<String> neighborhoods = new HashSet<String>();
-			Set<String> schools = new HashSet<String>();
-			if(categoryJSON != null) {
-				for(int i = 0; i < categoryJSON.size(); i++) {
-					categories.add(categoryJSON.get(i).toString());
-				}
-			}	
-			if(neighborhoodJSON != null) {
-				for(int i = 0; i < neighborhoodJSON.size(); i++) {
-					neighborhoods.add(neighborhoodJSON.get(i).toString());
-				}
-			}
-			if(schoolJSON != null) {
-				for(int i = 0; i < schoolJSON.size(); i++) {
-					schools.add(schoolJSON.get(i).toString());
-				}
-			}
-			restaurant.setBusinessID((String)line.get("business_id"));
-			restaurant.setCategories(categories);
-			restaurant.setCity((String)line.get("city"));
-			restaurant.setFullAddress((String)line.get("full_address"));
-			restaurant.setLatitude((double)line.get("latitude"));
-			restaurant.setLongitude((double)line.get("longitude"));
-			restaurant.setName((String)line.get("name"));
-			restaurant.setNeighborhoods(neighborhoods);
-			restaurant.setOpen((boolean)line.get("open"));
-			restaurant.setphotoURL((String)line.get("photo_url"));
-			restaurant.setPrice((long)line.get("price"));
-			restaurant.setReviewCount((long)line.get("review_count"));
-			restaurant.setSchools(schools);
-			restaurant.setStars((double)line.get("stars"));
-			restaurant.setState((String)line.get("state"));
-			restaurant.setType((String)line.get("type"));
-			restaurant.setURL((String)line.get("url"));
-			setRest.add(restaurant);
+		while((inputLine = inRest.readLine()) != null) {
+			JSONObject lineRest = (JSONObject)(parser.parse(inputLine));
+			createRestaurantDB(lineRest);
 		}
-		//System.out.println(setRest.size());
+		while((inputLine = inReview.readLine()) != null) {
+			JSONObject lineReview = (JSONObject)(parser.parse(inputLine));
+			createReviewDB(lineReview);
+		}
+		while((inputLine = inUser.readLine()) != null) {
+			JSONObject lineUser = (JSONObject)(parser.parse(inputLine));
+			createUserDB(lineUser);
+		}
+
 		//parse("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
 	}
 
@@ -128,6 +99,67 @@ public class RestaurantDB {
 		
 		
 		return null;
+	}
+	
+	public static void createRestaurantDB(JSONObject line) {
+		Restaurant restaurant = new Restaurant();
+		JSONArray categoryJSON = (JSONArray) line.get("categories");
+		JSONArray neighborhoodJSON = (JSONArray) line.get("neighborhoods");
+		JSONArray schoolJSON = (JSONArray) line.get("schools");
+		Set<String> categories = new HashSet<String>();
+		Set<String> neighborhoods = new HashSet<String>();
+		Set<String> schools = new HashSet<String>();
+		if(categoryJSON != null) {
+			for(int i = 0; i < categoryJSON.size(); i++) {
+				categories.add(categoryJSON.get(i).toString());
+			}
+		}	
+		if(neighborhoodJSON != null) {
+			for(int i = 0; i < neighborhoodJSON.size(); i++) {
+				neighborhoods.add(neighborhoodJSON.get(i).toString());
+			}
+		}
+		if(schoolJSON != null) {
+			for(int i = 0; i < schoolJSON.size(); i++) {
+				schools.add(schoolJSON.get(i).toString());
+			}
+		}
+		restaurant.setBusinessID((String)line.get("business_id"));
+		restaurant.setCategories(categories);
+		restaurant.setCity((String)line.get("city"));
+		restaurant.setFullAddress((String)line.get("full_address"));
+		restaurant.setLatitude((double)line.get("latitude"));
+		restaurant.setLongitude((double)line.get("longitude"));
+		restaurant.setName((String)line.get("name"));
+		restaurant.setNeighborhoods(neighborhoods);
+		restaurant.setOpen((boolean)line.get("open"));
+		restaurant.setphotoURL((String)line.get("photo_url"));
+		restaurant.setPrice((long)line.get("price"));
+		restaurant.setReviewCount((long)line.get("review_count"));
+		restaurant.setSchools(schools);
+		restaurant.setStars((double)line.get("stars"));
+		restaurant.setState((String)line.get("state"));
+		restaurant.setType((String)line.get("type"));
+		restaurant.setURL((String)line.get("url"));
+		setRest.add(restaurant);
+	}
+	
+	public static void createReviewDB(JSONObject line) {
+		//System.out.println(line);
+		Map<String, Long> votes = (Map<String, Long>) line.get("votes");
+		Review review = new Review((String) line.get("type"), (String) line.get("business_id"), (String) line.get("review_id"), 
+									(String) line.get("text"), (String) line.get("user_id"), (String) line.get("date"), 
+									votes.get("cool"), votes.get("useful"), votes.get("funny"), (long) line.get("stars"));
+		setReview.add(review);
+	}
+	
+	public static void createUserDB(JSONObject line) {
+		//System.out.println(line);
+		Map<String, Long> votes = (Map<String, Long>) line.get("votes");
+		User user = new User((String) line.get("url"), (String) line.get("type"), (String) line.get("user_id"),
+							(String) line.get("name"), votes.get("funny"), votes.get("useful"), votes.get("cool"), 
+							(long) line.get("review_count"), (double) line.get("average_stars"));
+		setUser.add(user);
 	}
 	
 	public static void parse(String queryString) {

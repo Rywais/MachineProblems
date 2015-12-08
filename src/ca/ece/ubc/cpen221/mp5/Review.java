@@ -5,14 +5,14 @@ package ca.ece.ubc.cpen221.mp5;
 public class Review {
 
 	private String type, businessID, reviewID, text, userID, date;
-	private int coolVotes, usefulVotes, funnyVotes, stars;
+	private long coolVotes, usefulVotes, funnyVotes, stars;
 	
 	public Review(){} //Default constructor
 	
 	//Verbose constructor (INcludes all internal values as args)
 	public Review(String type, String businessID, String reviewID, String text,
-			String userID, String date, int coolVotes, int usefulVotes,
-			int funnyVotes, int stars){
+			String userID, String date, long coolVotes, long usefulVotes,
+			long funnyVotes, long stars){
 		
 		this.type = type;
 		this.businessID = businessID;
@@ -90,19 +90,19 @@ public class Review {
 		return date;
 	}
 
-	int getCoolVotes() {
+	long getCoolVotes() {
 		return coolVotes;
 	}
 
-	int getUsefulVotes() {
+	long getUsefulVotes() {
 		return usefulVotes;
 	}
 
-	int getFunnyVotes() {
+	long getFunnyVotes() {
 		return funnyVotes;
 	}
 
-	public int getStars() {
+	public long getStars() {
 		return stars;
 	}
 	
