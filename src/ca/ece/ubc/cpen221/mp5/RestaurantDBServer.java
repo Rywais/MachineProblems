@@ -3,14 +3,10 @@ package ca.ece.ubc.cpen221.mp5;
 import java.io.*;
 import java.net.*;
 
-// TODO: Implement a server that will instantiate a database, 
-// process queries concurrently, etc.
 
 public class RestaurantDBServer {
 
 	private final RestaurantDB db;
-	private ServerSocket mySocket;
-	private Socket clientSocket;
 	
 	/**
 	 * Constructor
@@ -30,15 +26,8 @@ public class RestaurantDBServer {
 			
 			while(true){
 				Socket clientSocket = mySocket.accept();
-				/*BufferedReader in = new BufferedReader(
-						new InputStreamReader(clientSocket.getInputStream()));
-				String inputLine;
-				while((inputLine = in.readLine()) != null){
-					System.out.println(inputLine);
-					
-				}
-				*/
-				Thread thread = new Thread(new ServerThread(clientSocket));
+				
+				Thread thread = new Thread(new ServerThread(clientSocket, db));
 				thread.start();
 				
 			}

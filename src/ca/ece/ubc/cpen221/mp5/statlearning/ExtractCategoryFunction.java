@@ -17,7 +17,7 @@ public class ExtractCategoryFunction  implements MP5Function{
 	@Override
 	public double f(Restaurant yelpRestaurant, RestaurantDB db){
 		
-		if(!db.query("All Restaurants").contains(yelpRestaurant)){
+		if(!db.getRestaurantSet().contains(yelpRestaurant)){
 			return -10000.0;
 		}
 		

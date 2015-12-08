@@ -31,8 +31,7 @@ public class LinRegFunction implements MP5Function{
 	@Override
 	public double f(Restaurant yelpRestaurant, RestaurantDB db) {
 		
-		//TODO: Enter the proper query
-		if(!db.query("All restaurants").contains(yelpRestaurant))
+		if(!db.getRestaurantSet().contains(yelpRestaurant))
 			return -10000.0;
 		
 		double returnVal = (featureFunction.f(yelpRestaurant, db) * slope) + intercept;

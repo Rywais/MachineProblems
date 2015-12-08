@@ -2,8 +2,10 @@ package ca.ece.ubc.cpen221.mp5;
 
 import java.util.*;
 
-// TODO: Use this class to represent a restaurant.
-// State the rep invariant and abs
+
+//Rep invariant: price is between 0 & 5.0, and once a value is assigned is
+//Should never again be null
+//Abstract value: This is the businessID
 
 public class Restaurant {
 

@@ -21,8 +21,7 @@ public class Algorithms {
 		Centroid[] centroids = new Centroid[k];
 		double maxLat, minLat, maxLong, minLong, latSpan, longSpan;
 		
-		//TODO: Use proper method of getting set of restaurants from DB
-		Set<Restaurant> restaurants = db.query("I DON'T KNOW!!!");
+		Set<Restaurant> restaurants = db.getRestaurantSet();
 		
 		//If there are no restaurants return an empty list
 		if(restaurants.isEmpty())
@@ -113,7 +112,7 @@ public class Algorithms {
 	 * @return a string in JSON format which represents the list of clusters
 	 */
 	public static String convertClustersToJSON(List<Set<Restaurant>> clusters) {
-		// TODO: Implement this method
+		
 		
 		if(clusters.size() == 0)
 			return "";
@@ -138,8 +137,14 @@ public class Algorithms {
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
 		double S_xx, S_xy, meanX, meanY;
 		
-		//TODO: Use proper method to get all the user's reviews
-		Set<Review> userReviews = new HashSet<Review>();
+		
+		Set<Review> userReviews = db.getReviewSet();
+		
+		//Remove all wrong reviews
+		for(Review r : userReviews){
+			if(!r.getUserID().equals(u.getUserID()))
+				userReviews.remove(r);
+		}
 		
 		//S_vals = [S_xx, S_xy, S_yy, meanX, meanY]
 		double[] S_vals = getSValues(userReviews, db, featureFunction);
@@ -156,13 +161,18 @@ public class Algorithms {
 	}
 
 	public static MP5Function getBestPredictor(User u, RestaurantDB db, List<MP5Function> featureFunctionList) {
-		// TODO: Implement this method
 		
 		double bestR_squared = -1.0;
 		double[] S_vals;
 		int bestR_squaredIndex = 0;
-		//TODO: Use the proper method of getting the list of user reviews
-		Set<Review> userReviews = new HashSet<Review>();
+		
+		Set<Review> userReviews = db.getReviewSet();
+
+		// Remove all wrong reviews
+		for (Review r : userReviews) {
+			if (!r.getUserID().equals(u.getUserID()))
+				userReviews.remove(r);
+		}
 		
 		//Find the list index associated with the best R-Squared value
 		for(int i = 0; i < featureFunctionList.size(); i++){
@@ -182,8 +192,6 @@ public class Algorithms {
 		return new LinRegFunction(slope,intercept,featureFunctionList.get(bestR_squaredIndex));
 	}
 	
-	
-	//TODO: Make all below functions private for final release
 	
 	
 	/**

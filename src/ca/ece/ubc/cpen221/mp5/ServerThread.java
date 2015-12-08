@@ -9,7 +9,7 @@ public class ServerThread implements Runnable {
 	private static int nextThreadID = 0;
 	private int threadID;
 	
-	ServerThread(Socket clientSocket){
+	ServerThread(Socket clientSocket, RestaurantDB db){
 		this.clientSocket = clientSocket;
 		threadID = nextThreadID++;
 	}
@@ -17,12 +17,16 @@ public class ServerThread implements Runnable {
 	public void run(){
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			 PrintWriter out =
+				        new PrintWriter(clientSocket.getOutputStream(), true);
 			String inputLine;
 			while ((inputLine = in.readLine()) != null) {
-				//TODO: Add actual action & Delete this test...
-				System.out.println(threadID + ": " + inputLine);
+				//inputLine is the input from the Client
 				
-				//TODO: Insert ending condition
+				//TODO: Add actual action & Delete this test...
+				out.println(threadID + ": " + inputLine);
+				
+				//TODO: Insert ending command to break out of loop
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

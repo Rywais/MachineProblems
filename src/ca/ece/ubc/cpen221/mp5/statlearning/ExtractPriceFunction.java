@@ -11,8 +11,8 @@ public class ExtractPriceFunction implements MP5Function {
 	 */
 	@Override
 	public double f(Restaurant yelpRestaurant, RestaurantDB db) {
-		//TODO: Add proper call
-		if(db.query("All Restaurants").contains(yelpRestaurant)){
+		
+		if(db.getRestaurantSet().contains(yelpRestaurant)){
 			return (double) yelpRestaurant.getPrice();
 		}
 		

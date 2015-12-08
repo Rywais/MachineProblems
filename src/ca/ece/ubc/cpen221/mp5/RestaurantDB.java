@@ -287,4 +287,17 @@ public class RestaurantDB {
 	public void richQueries(String queryString) {
 		
 	}*/
+	
+	public Set<Restaurant> getRestaurantSet(){
+		return new HashSet<Restaurant>(setRest);
+	}
+	
+	public Set<User> getUserSet(){
+		return new HashSet<User>(setUser);
+	}
+	
+	public Set<Review> getReviewSet(){
+		return new HashSet<Review>(setReview);
+	}
+	
 }
