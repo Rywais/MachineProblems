@@ -89,29 +89,71 @@ public class RestaurantDB {
 			createUserDB(lineUser);
 		}
 
-		//parse("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
+		//Set<Restaurant> result = query("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
+		//toJSON(result);
 
 	}
 
-	public Set<Restaurant> query(String queryString) {
+	public static Set<Restaurant> query(String queryString) {
 		parse(queryString);
-		Set<Restaurant> database = this.getRestaurantSet();
+		//Set<Restaurant> database = this.getRestaurantSet();
+		Set<Restaurant> database = setRest;
 		Set<Restaurant> result = new HashSet<Restaurant>();
 		Set<String> keySet = queryMap.keySet();
-		Iterator keyItr = keySet.iterator();
 		Iterator itr = database.iterator();
-		while(keyItr.hasNext()) {
-			String key = (String) keyItr.next();
+		while(itr.hasNext()) {
 			Restaurant rest = (Restaurant) itr.next();
-			if (rest.getNeighborhoods().contains(queryMap.get("neighborhood"))) {
-				if(rest.getCategories().contains(queryMap.get("category"))) {
-					//queryMap.
+			Iterator keyItr = keySet.iterator();
+			while(keyItr.hasNext()) {
+				String key = (String) keyItr.next();
+				if ((rest.getNeighborhoods().contains(queryMap.get(key))) ||
+					(rest.getCategories().contains(queryMap.get(key))) ||
+					(rest.getName().matches(queryMap.get(key)))) {
+					result.add(rest);
+				}
+				else if ((key.contains("price from")) && (rest.getPrice() <= Long.parseLong(queryMap.get(key))) ||
+						(key.contains("price to")) && (rest.getPrice() >= Long.parseLong(queryMap.get(key)) )) {
+					result.add(rest);
+				}
+				else if ((key.contains("rating from")) && (rest.getStars() <= Double.parseDouble(queryMap.get(key))) ||
+						(key.contains("rating to")) && (rest.getStars() >= Double.parseDouble(queryMap.get(key)) )) {
+					result.add(rest);
 				}
 			}
 		}
 		
-		return null;
+		System.out.println(result);
+		return result;
 	}
+	
+	public static JSONArray toJSON(Set<Restaurant> result) {
+		JSONArray restaurantsJSONArray = new JSONArray();
+		JSONObject restaurantsJSONObject = new JSONObject();
+		for (Restaurant rest : result) {
+			 restaurantsJSONObject.put("open", rest.isOpen());
+			 restaurantsJSONObject.put("url", rest.getURL());
+			 restaurantsJSONObject.put("longitude", rest.getLongitude());
+			 restaurantsJSONObject.put("neighborhoods", rest.getNeighborhoods());
+			 restaurantsJSONObject.put("business_id", rest.getBusinessID());
+			 restaurantsJSONObject.put("name", rest.getName());
+			 restaurantsJSONObject.put("categories", rest.getCategories());
+			 restaurantsJSONObject.put("state", rest.getState());
+			 restaurantsJSONObject.put("type", rest.getType());
+			 restaurantsJSONObject.put("stars", rest.getStars());
+			 restaurantsJSONObject.put("city", rest.getCity());
+			 restaurantsJSONObject.put("full_address", rest.getFullAddress());
+			 restaurantsJSONObject.put("review_count", rest.getReviewCount());
+			 restaurantsJSONObject.put("photo_url", rest.getphotoURL());
+			 restaurantsJSONObject.put("schools", rest.getSchools());
+			 restaurantsJSONObject.put("latitude", rest.getLatitude());
+			 restaurantsJSONObject.put("price", rest.getPrice());
+			 restaurantsJSONArray.add(restaurantsJSONObject.toJSONString());	 
+		 }
+		 
+		 return restaurantsJSONArray;
+	}
+	
+	
 	
 	public static void createRestaurantDB(JSONObject line) {
 		Restaurant restaurant = new Restaurant();
@@ -182,7 +224,7 @@ public class RestaurantDB {
 		QueryParser parser = new QueryParser(tokens);
 		parser.reportErrorsAsExceptions();
 		ParseTree tree = parser.root();
-		System.err.println(tree.toStringTree(parser));
+		//System.err.println(tree.toStringTree(parser));
 		ParseTreeWalker walker = new ParseTreeWalker();
 		QueryListener_QueryCreator listener = new QueryListener_QueryCreator();
 		QueryListener listen = new QueryListenerPrintEverything();
@@ -264,7 +306,7 @@ public class RestaurantDB {
 	        	String string = ctx.getText();
 	        	stack.push(string);
 
-	            System.out.println(string);
+	            //System.out.println(string);
 	        } else {
 	            // do nothing
 	        }
@@ -294,7 +336,7 @@ public class RestaurantDB {
 	        	String string = ctx.getText();
 	        	stack.push(string);
 
-	            System.out.println(string);
+	            //System.out.println(string);
 	        } else {
 	            // do nothing
 	        }
@@ -314,7 +356,7 @@ public class RestaurantDB {
 	        		}
 	        	}
 	        	
-	        	System.out.println(queryMap);
+	        	//System.out.println(queryMap);
 	        } else {
 	            // do nothing
 	        }
@@ -333,7 +375,7 @@ public class RestaurantDB {
 	        			i++;
 	        		}
 	        	}
-	        	System.out.println(queryMap);
+	        	//System.out.println(queryMap);
 	        } else {
 	            // do nothing
 	        }
@@ -352,7 +394,7 @@ public class RestaurantDB {
 	        			i++;
 	        		}
 	        	}
-	        	System.out.println(queryMap);
+	        	//System.out.println(queryMap);
 	        } else {
 	            // do nothing
 	        }
@@ -366,7 +408,7 @@ public class RestaurantDB {
 	        			queryMap.put("price to", stack.pop());
 	        		}
 	           	}
-	        	System.out.println(queryMap);
+	        	//System.out.println(queryMap);
 	        } else {
 	            // do nothing
 	        }
@@ -380,7 +422,7 @@ public class RestaurantDB {
 	        			queryMap.put("rating to", stack.pop());
 	        		}
 	        	}
-	        	System.out.println(queryMap);
+	        	//System.out.println(queryMap);
 	        } else {
 	            // do nothing
 	        }
