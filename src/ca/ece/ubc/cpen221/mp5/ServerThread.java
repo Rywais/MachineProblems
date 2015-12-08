@@ -25,10 +25,8 @@ public class ServerThread implements Runnable {
 			while ((inputLine = in.readLine()) != null) {
 				//inputLine is the input from the Client
 				
-				//TODO: Add actual action & Delete this test...
-				out.println(threadID + ": " + inputLine);
+				out.println(RestaurantDB.toJSON(db.query(inputLine)));
 				
-				//TODO: Insert ending command to break out of loop
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
