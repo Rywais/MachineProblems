@@ -16,6 +16,8 @@ import java.util.Stack;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.tree.pattern.ParseTreeMatch;
+import org.antlr.v4.runtime.tree.pattern.ParseTreePattern;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -79,7 +81,8 @@ public class RestaurantDB {
 			createUserDB(lineUser);
 		}
 
-		//parse("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
+		parse("in(\"Telegraph Ave\") && (category(\"Chinese\") || category(\"Italian\")) && price(1..2)");
+		//parse("Telegraph Ave");
 	}
 
 	public Set<Restaurant> query(String queryString) {
@@ -164,89 +167,86 @@ public class RestaurantDB {
 	
 	public static void parse(String queryString) {
 		CharStream stream = new ANTLRInputStream(queryString);
-		queryLexer lexer = new queryLexer(stream);
-		TokenStream tokens = new CommonTokenStream(lexer);
-		
-		queryParser parser = new queryParser(tokens);
+		QueryLexer lexer = new QueryLexer(stream);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		//tokens.setTokenSource(lexer);
+		QueryParser parser = new QueryParser(tokens);
 		
 		ParseTree tree = parser.root();
+		/*ParseTreePattern p = parser.compileParseTreePattern(queryString, QueryParser.RULE_root, lexer);
+		ParseTreeMatch m = p.match(tree);
+		String name = m.get("name");*/
 		System.err.println(tree.toStringTree(parser));
 		ParseTreeWalker walker = new ParseTreeWalker();
-		//queryListener_queryCreator listener = new queryListener_queryCreator();
-		queryListener listener = new queryListenerPrintEverything();
+		//QueryListener_QueryCreator listener = new QueryListener_QueryCreator();
+		QueryListener listener = new QueryListenerPrintEverything();
         walker.walk(listener, tree);
         
 		//return listener.getQuery();
 	}
 	
-	private static class queryListenerPrintEverything extends queryBaseListener {
-	    public void enterRoot(queryParser.RootContext ctx) {
+	private static class QueryListenerPrintEverything extends QueryBaseListener {
+	    public void enterRoot(QueryParser.RootContext ctx) {
 	        System.err.println("entering root");
 	    }
-	    public void exitRoot(queryParser.RootContext ctx) {
+	    public void exitRoot(QueryParser.RootContext ctx) {
 	        System.err.println("exiting root");
 	    }
-	    public void enterOrExpr(queryParser.OrExprContext ctx) {
+	    public void enterOrExpr(QueryParser.OrExprContext ctx) {
 	        System.err.println("entering orExpr");
 	    }
-	    public void exitOrExpr(queryParser.OrExprContext ctx) {
+	    public void exitOrExpr(QueryParser.OrExprContext ctx) {
 	        System.err.println("exiting orExpr");
 	    }
-	    public void enterAndExpr(queryParser.AndExprContext ctx) {
+	    public void enterAndExpr(QueryParser.AndExprContext ctx) {
 	        System.err.println("entering andExpr");
 	    }
-	    public void exitAndExpr(queryParser.AndExprContext ctx) {
+	    public void exitAndExpr(QueryParser.AndExprContext ctx) {
 	        System.err.println("exiting andExpr");
 	    }
-	    public void enterAtom(queryParser.AtomContext ctx) {
+	    public void enterAtom(QueryParser.AtomContext ctx) {
 	        System.err.println("entering atom");
 	    }
-	    public void exitAtom(queryParser.AtomContext ctx) {
+	    public void exitAtom(QueryParser.AtomContext ctx) {
 	        System.err.println("exiting atom");
 	    }
-	    public void enterString(queryParser.StringContext ctx) {
-	        System.err.println("entering string");
+	    /*public void enterString(QueryParser.StringContext ctx) {
+	    	System.err.println("entering string");
 	    }
-	    public void exitString(queryParser.StringContext ctx) {
+	    public void exitString(QueryParser.StringContext ctx) {
 	        System.err.println("exiting string");
-	    }
-	    public void enterIn(queryParser.InContext ctx) {
+	    }*/
+	    public void enterIn(QueryParser.InContext ctx) {
 	        System.err.println("entering in");
 	    }
-	    public void exitIn(queryParser.InContext ctx) {
+	    public void exitIn(QueryParser.InContext ctx) {
 	        System.err.println("exiting in");
 	    }
-	    public void enterCategory(queryParser.CategoryContext ctx) {
+	    public void enterCategory(QueryParser.CategoryContext ctx) {
 	        System.err.println("entering category");
 	    }
-	    public void exitCategory(queryParser.CategoryContext ctx) {
+	    public void exitCategory(QueryParser.CategoryContext ctx) {
 	        System.err.println("exiting category");
 	    }
-	    public void enterName(queryParser.NameContext ctx) {
+	    public void enterName(QueryParser.NameContext ctx) {
 	        System.err.println("entering name");
 	    }
-	    public void exitName(queryParser.NameContext ctx) {
+	    public void exitName(QueryParser.NameContext ctx) {
 	        System.err.println("exiting name");
 	    }
-	    public void enterRating(queryParser.RatingContext ctx) {
+	    public void enterRating(QueryParser.RatingContext ctx) {
 	        System.err.println("entering rating");
 	    }
-	    public void exitRating(queryParser.RatingContext ctx) {
+	    public void exitRating(QueryParser.RatingContext ctx) {
 	        System.err.println("exiting rating");
 	    }
-	    public void enterPrice(queryParser.PriceContext ctx) {
+	    public void enterPrice(QueryParser.PriceContext ctx) {
 	        System.err.println("entering price");
 	    }
-	    public void exitPrice(queryParser.PriceContext ctx) {
+	    public void exitPrice(QueryParser.PriceContext ctx) {
 	        System.err.println("exiting price");
 	    }
-	    public void enterRange(queryParser.RangeContext ctx) {
-	        System.err.println("entering range");
-	    }
-	    public void exitRange(queryParser.RangeContext ctx) {
-	        System.err.println("exiting range");
-	    }
-	    
+
 	}
 	
 	/*private static class queryListener_queryCreator extends queryBaseListener {
