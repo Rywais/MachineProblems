@@ -7,6 +7,9 @@ import java.net.*;
 public class RestaurantDBServer {
 
 	private final RestaurantDB db;
+	private static final String restaurantData = "data/restaurants.json";
+	private static final String reviewData = "data/reviews.json";
+	private static final String userData = "data/users.json";
 	
 	/**
 	 * Constructor
@@ -36,6 +39,15 @@ public class RestaurantDBServer {
 			e.printStackTrace();
 		}
 
+	}
+	
+	/**
+	 * Launches the Database Server as it currently exists
+	 * @param args
+	 */
+	public static void main(String args[]){
+		RestaurantDBServer myServer = new RestaurantDBServer(7979,restaurantData,reviewData,userData);
+		
 	}
 
 }

@@ -8,7 +8,7 @@ public class RestaurantDBServerTests {
 
 	@Test
 	public void test() {
-		RestaurantDBServer rdbs = new RestaurantDBServer(6969,"a","b","c");
+		RestaurantDBServer rdbs = new RestaurantDBServer(7970,"a","b","c");
 		
 	}
 
