@@ -40,6 +40,7 @@ public class AlgorithmsTest {
 		r3.setName("Burger King");
 		r3.setLatitude(69.0);
 		r3.setLongitude(96.0);
+		r3.setBusinessID("BK");
 		
 		s1.add(r1);
 		s2.add(r2);
@@ -50,7 +51,9 @@ public class AlgorithmsTest {
 		testList.add(s2);
 		
 		//Test against proper output.
-		assertEquals(Algorithms.convertClustersToJSON(testList), "[{\"x\": 69.69, \"y\": 96.96, \"name\": \"McDonald's\", \"cluster\": 1, \"weight\": 1.0}, {\"x\": 69.0, \"y\": 96.0, \"name\": \"Burger King\", \"cluster\": 2, \"weight\": 1.0}, {\"x\": 70.0, \"y\": 97.0, \"name\": \"A&W\", \"cluster\": 2, \"weight\": 1.0}]");
+		assertTrue(Algorithms.convertClustersToJSON(testList).contains("{\"x\": 69.69, \"y\": 96.96, \"name\": \"McDonald's\", \"cluster\": 1, \"weight\": 1.0}"));
+		assertTrue(Algorithms.convertClustersToJSON(testList).contains("{\"x\": 69.0, \"y\": 96.0, \"name\": \"Burger King\", \"cluster\": 2, \"weight\": 1.0}"));
+		assertTrue(Algorithms.convertClustersToJSON(testList).contains("{\"x\": 70.0, \"y\": 97.0, \"name\": \"A&W\", \"cluster\": 2, \"weight\": 1.0}"));
 	}
 
 }

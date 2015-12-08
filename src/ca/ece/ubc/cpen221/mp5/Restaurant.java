@@ -203,9 +203,13 @@ public class Restaurant {
 	
 	@Override
 	public int hashCode(){
+		try{
 		int returnVal = ((int) businessID.charAt(0)) << 16;
 		returnVal += businessID.charAt(1);
 		return returnVal;
+		} catch(Exception e){
+			return 0;
+		}
 	}
 	
 }

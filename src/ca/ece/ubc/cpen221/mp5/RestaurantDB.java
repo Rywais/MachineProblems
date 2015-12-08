@@ -249,7 +249,6 @@ public class RestaurantDB {
 	    
 	}
 	
-	
 	/*private static class queryListener_queryCreator extends queryBaseListener {
 	    private Stack<query> stack = new Stack<query>();
 	    
